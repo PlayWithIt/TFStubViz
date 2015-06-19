@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/rc_all">
+        <file>images/dual_off.png</file>
+        <file>images/dual_on.png</file>
+        <file>images/single_off.png</file>
+        <file>images/single_on.png</file>
+        <file>images/brick_master.jpg</file>
+    </qresource>
+</RCC>
