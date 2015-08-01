@@ -18,3 +18,5 @@ Compile:
 * be sure that ``qmake`` is in your PATH and points to the correct Qt version
 * run ``make`` in the base directory for a debug-build
 * start ``build/TFStubViz``
+* or switch to ``TFStubserver/src/stubserver`` and run ``{your-path}/TFStubViz
+-d homestation.properties`` as a full example.
