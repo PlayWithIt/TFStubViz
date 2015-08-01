@@ -175,12 +175,15 @@ void MainWindow::on_action_Run_triggered()
     // first add the wide items
     for (auto it : devices)
     {
+        VisualizationWidget *vzw = NULL;
+
         switch (it->getDeviceTypeId()) {
             case MULTI_TOUCH_DEVICE_IDENTIFIER: {
                 TouchPad *touch = new TouchPad(this, it->getUidStr().c_str());
                 calculatePositionAndAdd(row, col, layout, touch);
                 touch->setLabels(it->getLabel());
                 it->setVisualizationClient(*touch);
+                vzw = touch;
                 break;
             }
 
@@ -189,9 +192,12 @@ void MainWindow::on_action_Run_triggered()
                 calculatePositionAndAdd(row, col, layout, lcd);
                 lcd->setLabels(it->getLabel());
                 it->setVisualizationClient(*(lcd->getLCDDisplayArea()));
+                vzw = lcd;
                 break;
             }
         }
+        if (vzw)
+            vzw->setStackParameter(it->getPosition(), it->getConnectedUidStr());
     }
 
     // add small items
@@ -199,6 +205,7 @@ void MainWindow::on_action_Run_triggered()
     {
         const char *deviceTypeName = it->getDeviceTypeName().c_str();
         const char *uidStr         = it->getUidStr().c_str();
+        VisualizationWidget *vzw   = NULL;
 
         switch (it->getDeviceTypeId()) {
 
@@ -209,6 +216,7 @@ void MainWindow::on_action_Run_triggered()
                 Relay *relay = new Relay(this, deviceTypeName, uidStr);
                 calculatePositionAndAdd(row, col, layout, relay);
                 it->setVisualizationClient(*relay);
+                vzw = relay;
                 break;
             }
 
@@ -227,6 +235,7 @@ void MainWindow::on_action_Run_triggered()
                 calculatePositionAndAdd(row, col, layout, widget);
                 widget->setValueLabel(it->getLabel());
                 it->setVisualizationClient(*widget);
+                vzw = widget;
                 break;
             }
 
@@ -239,6 +248,7 @@ void MainWindow::on_action_Run_triggered()
                 widget->setValueLabels(it->getLabel(), "Current mA");
                 widget->setLedOn(true);
                 it->setVisualizationClient(*widget);
+                vzw = widget;
                 break;
             }
 
@@ -247,6 +257,7 @@ void MainWindow::on_action_Run_triggered()
                 calculatePositionAndAdd(row, col, layout, widget);
                 widget->setValueLabels(it->getLabel(), "Ambient °C * 100");
                 it->setVisualizationClient(*widget);
+                vzw = widget;
                 break;
             }
 
@@ -254,6 +265,7 @@ void MainWindow::on_action_Run_triggered()
                 Sensor *widget = new Sensor(this, deviceTypeName, uidStr, true);
                 calculatePositionAndAdd(row, col, layout, widget);
                 it->setVisualizationClient(*widget);
+                vzw = widget;
                 break;
             }
 
@@ -265,9 +277,12 @@ void MainWindow::on_action_Run_triggered()
                 if (it->getDeviceTypeId() == HALL_EFFECT_DEVICE_IDENTIFIER)
                     widget->showUseCounter();
                 it->setVisualizationClient(*widget);
+                vzw = widget;
                 break;
             }
         }
+        if (vzw)
+            vzw->setStackParameter(it->getPosition(), it->getConnectedUidStr());
     }
     ui->scrollAreaWidgetContents->setMinimumHeight(315 * (row+1));
 }

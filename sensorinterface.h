@@ -3,14 +3,14 @@
 
 #include <QCheckBox>
 
-#include <stubserver/VisualizationClient.h>
+#include "visualizationwidget.h"
 
 /**
  * Base class for object that can be used as sensors (even button input
  * is some kind of sensor). This class handles a manual control: a
  * derived class can have a checkbox to enable manual control.
  */
-class SensorInterface : public QWidget, public stubserver::VisualizationClient
+class SensorInterface : public QWidget, public VisualizationWidget
 {
     Q_OBJECT
 

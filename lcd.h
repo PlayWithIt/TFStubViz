@@ -2,6 +2,7 @@
 #define LCD_H
 
 #include "ui_lcd.h"
+#include "visualizationwidget.h"
 
 class LCDDisplayArea;
 
@@ -9,8 +10,12 @@ class LCDDisplayArea;
  * @brief The LCD class with dotted charset
  *
  */
-class LCD : public QWidget, private Ui::LcdForm
+class LCD : public QWidget, public VisualizationWidget, private Ui::LcdForm
 {
+    Q_OBJECT
+
+    LCDDisplayArea *renderArea;
+
 public:
 
     /**
@@ -41,11 +46,6 @@ public:
      * @param label - label string with spaces as separator, '_' will be blank in the label
      */
     void setLabels(const std::string &label) const;
-
-private:
-    Q_OBJECT
-
-    LCDDisplayArea *renderArea;
 };
 
 #endif // LCD_H

@@ -35,6 +35,11 @@ void DualSensor::setValueLabels(const std::string &left, const std::string &righ
     sensor1->setValueLabel(right);
 }
 
+void DualSensor::setStackParameter(char position, const std::string &parent)
+{
+    sensor0->setStackParameter(position, parent);
+    sensor1->setStackParameter(position, parent);
+}
 
 /**
  * Receives the notification when the sensor value changes.

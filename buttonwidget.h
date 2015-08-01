@@ -3,7 +3,8 @@
 
 #include <QPushButton>
 #include <list>
-#include <stubserver/VisualizationClient.h>
+
+#include "visualizationwidget.h"
 
 /**
  * The ButtonWidget is used to handle button input from an array of buttons
@@ -13,7 +14,7 @@
  * The button itself is not created here, but in a parent class. The parent
  * must connect the public slots of this class.
  */
-class ButtonWidget : public QWidget, public stubserver::VisualizationClient
+class ButtonWidget : public QWidget, public VisualizationWidget
 {
     Q_OBJECT
 

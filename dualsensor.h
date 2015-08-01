@@ -2,8 +2,9 @@
 #define DUALSENSOR_H
 
 #include "sensor.h"
+#include "visualizationwidget.h"
 
-class DualSensor : public QWidget, public stubserver::VisualizationClient
+class DualSensor : public QWidget, public VisualizationWidget
 {
     Sensor *sensor0;
     Sensor *sensor1;
@@ -21,6 +22,9 @@ public:
     void setLedOn(bool on) {
         sensor0->setLedOn(on);
     }
+
+    //----- VisualizationWidget
+    virtual void setStackParameter(char position, const std::string &parent);
 
     //----- VisualizationClient
     virtual void notify(const stubserver::VisibleDeviceState &state) override;

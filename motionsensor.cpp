@@ -11,6 +11,7 @@ MotionSensor::MotionSensor(QWidget *parent, const char *type, const char *uid)
     setCheckBox(ui->check);
 
     ui->groupBox->setTitle(QString(type) + QString(" - ") + QString(uid));
+    connectTooltipTo(ui->groupBox, uid);
 
     // Connect the 4 buttons of the LCD.
     connect(this,       &MotionSensor::valueChanged, this, &MotionSensor::updateUi);

@@ -12,8 +12,10 @@ int main(int argc, char *argv[])
     {
         if (strcmp(argv[i], "-d") == 0 && i+1 < argc)
             filename = argv[++i];
-        else
+        else {
             printf("Usage: TFStubViz {-d device.properties}\n\n");
+            return 1;
+        }
     }
 
     MainWindow w(filename);

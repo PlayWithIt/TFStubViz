@@ -3,7 +3,8 @@
 
 #include <QLabel>
 
-#include <stubserver/VisualizationClient.h>
+#include "visualizationwidget.h"
+
 
 namespace Ui {
 class Relay;
@@ -12,7 +13,7 @@ class Relay;
 class QPixmap;
 
 
-class Relay : public QWidget, public stubserver::VisualizationClient
+class Relay : public QWidget, public VisualizationWidget
 {
     Q_OBJECT
 

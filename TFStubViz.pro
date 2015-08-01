@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     buttonwidget.cpp \
     motionsensor.cpp \
     sensorinterface.cpp \
-    dualsensor.cpp
+    dualsensor.cpp \
+    visualizationwidget.cpp
 
 HEADERS  += mainwindow.h \
     touchpad.h \
@@ -37,7 +38,8 @@ HEADERS  += mainwindow.h \
     buttonwidget.h \
     motionsensor.h \
     sensorinterface.h \
-    dualsensor.h
+    dualsensor.h \
+    visualizationwidget.h
 
 FORMS    += mainwindow.ui touchpad.ui lcd.ui \
     sensor.ui \

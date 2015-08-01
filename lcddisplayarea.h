@@ -40,7 +40,7 @@ class LCDDisplayArea : public ButtonWidget
     void drawChar(char actCh, unsigned col, unsigned line, QPainter &painter);
 
 public:
-    LCDDisplayArea(QWidget *parent = 0);
+    LCDDisplayArea(QWidget *parent);
     virtual ~LCDDisplayArea();
 
     virtual void notify(const stubserver::VisibleDeviceState &hint) override;

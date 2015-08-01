@@ -50,4 +50,5 @@ TouchPad::TouchPad(QWidget *parent, const char *uid)
 
     if (uid != NULL)
         groupBox->setTitle(QString("MULTI_TOUCH - ") + QString(uid));
+    connectTooltipTo(groupBox, uid);
 }

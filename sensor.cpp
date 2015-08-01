@@ -19,6 +19,7 @@ Sensor::Sensor(QWidget *parent, const char *type, const char *uid, bool rotary)
         uiP->setupUi(this);
         uiP->groupBox->setTitle(QString(type) + QString(" - ") + QString(uid));
         setCheckBox(uiP->check);
+        connectTooltipTo(uiP->groupBox, uid);
 
         sensor   = uiP->sensor;
         labelMin = uiP->labelMin;
@@ -29,6 +30,7 @@ Sensor::Sensor(QWidget *parent, const char *type, const char *uid, bool rotary)
         uiS->setupUi(this);
         uiS->groupBox->setTitle(QString(type) + QString(" - ") + QString(uid));
         setCheckBox(uiS->check);
+        connectTooltipTo(uiS->groupBox, uid);
 
         sensor   = uiS->sensor;
         labelMin = uiS->labelMin;

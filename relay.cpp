@@ -33,6 +33,7 @@ Relay::Relay(QWidget *parent, const char *type, const char *uid)
 
     if (type != NULL && uid != NULL)
         ui->groupBox->setTitle(QString(type) + QString(" - ") + QString(uid));
+    connectTooltipTo(ui->groupBox, uid);
 
     if (type != NULL && strstr(type, "DUAL_")) {
         imgOn  = new QPixmap(loadPixmap("dual_on.png"));
