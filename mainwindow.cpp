@@ -7,6 +7,7 @@
 #include "dualsensor.h"
 #include "lcd.h"
 #include "lcddisplayarea.h"
+#include "ledstrip.h"
 #include "motionsensor.h"
 #include "relay.h"
 #include "sensor.h"
@@ -195,6 +196,14 @@ void MainWindow::on_action_Run_triggered()
                 vzw = lcd;
                 break;
             }
+
+            case LED_STRIP_DEVICE_IDENTIFIER: {
+                LedStrip *w = new LedStrip(this, it->getUidStr().c_str());
+                calculatePositionAndAdd(row, col, layout, w);
+                it->setVisualizationClient(*w);
+                vzw = w;
+                break;
+            }
         }
         if (vzw)
             vzw->setStackParameter(it->getPosition(), it->getConnectedUidStr());
@@ -226,6 +235,9 @@ void MainWindow::on_action_Run_triggered()
             case LINEAR_POTI_DEVICE_IDENTIFIER:
             case SOUND_INTENSITY_DEVICE_IDENTIFIER:
             case AMBIENT_LIGHT_DEVICE_IDENTIFIER:
+            case AMBIENT_LIGHT_V2_DEVICE_IDENTIFIER:
+            case ANALOG_IN_V2_DEVICE_IDENTIFIER:
+            case ANALOG_OUT_DEVICE_IDENTIFIER:
             case BAROMETER_DEVICE_IDENTIFIER:
             case HUMIDITY_DEVICE_IDENTIFIER:
             case LINE_DEVICE_IDENTIFIER:

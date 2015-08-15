@@ -42,7 +42,7 @@ signals:
     void ledChanged(bool);
 
 public slots:
-    void checkBoxClcked(int);
+    void checkBoxClicked(int);
     void activateManualControl();
 
 };

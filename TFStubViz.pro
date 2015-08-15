@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     motionsensor.cpp \
     sensorinterface.cpp \
     dualsensor.cpp \
-    visualizationwidget.cpp
+    visualizationwidget.cpp \
+    ledstrip.cpp
 
 HEADERS  += mainwindow.h \
     touchpad.h \
@@ -39,13 +40,16 @@ HEADERS  += mainwindow.h \
     motionsensor.h \
     sensorinterface.h \
     dualsensor.h \
-    visualizationwidget.h
+    visualizationwidget.h \
+    ledstrip.h
+
 
 FORMS    += mainwindow.ui touchpad.ui lcd.ui \
     sensor.ui \
     relay.ui \
     motionsensor.ui \
-    poti.ui
+    poti.ui \
+    ledstrip.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../TFStubserver/lib/Debug/release/ -lstubserver -lutils
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../TFStubserver/lib/Debug/debug/ -lstubserver -lutils

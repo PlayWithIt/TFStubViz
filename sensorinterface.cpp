@@ -30,7 +30,7 @@ void SensorInterface::activateManualControl()
 /**
  * @brief Sensor::manualSliderChange
  */
-void SensorInterface::checkBoxClcked(int v)
+void SensorInterface::checkBoxClicked(int v)
 {
     manualControl = v != 0;
     if (checkBox)

@@ -44,7 +44,7 @@ Sensor::Sensor(QWidget *parent, const char *type, const char *uid, bool rotary)
     connect(sensor,   &QAbstractSlider::sliderPressed,   this, &SensorInterface::activateManualControl);
     connect(sensor,   &QAbstractSlider::sliderMoved,     this, &Sensor::updateUi);
     connect(sensor,   &QAbstractSlider::actionTriggered, this, &Sensor::actionTriggered);
-    connect(checkBox, &QCheckBox::stateChanged,          this, &SensorInterface::checkBoxClcked);
+    connect(checkBox, &QCheckBox::stateChanged,          this, &SensorInterface::checkBoxClicked);
 }
 
 Sensor::~Sensor()
