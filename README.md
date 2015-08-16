@@ -15,8 +15,14 @@ Requirements:
 
 Compile:
 --------
+* be sure that ``TFStubserver`` is installed too in the same folder as ``TFStubViz``
 * be sure that ``qmake`` is in your PATH and points to the correct Qt version
-* run ``make`` in the base directory for a debug-build
+  e.g. use ``export PATH=~/Qt/5.4/gcc_64/bin:$PATH``
+* run ``make`` (or something like ``make -j4``) in the base directory for a debug-build
+
+Run:
+--------
 * start ``build/TFStubViz``
 * or switch to ``TFStubserver/src/stubserver`` and run ``{your-path}/TFStubViz
 -d homestation.properties`` as a full example.
+* you can switch the configuration properties also by menu
