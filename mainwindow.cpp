@@ -23,12 +23,13 @@
 #include <utils/Log.h>
 
 
-MainWindow::MainWindow(const char *configFile, QWidget *parent)
-    : QMainWindow(parent)
+MainWindow::MainWindow(const char *configFile, int _port)
+    : QMainWindow(0)
     , ui(new Ui::MainWindow)
     , configFileName(configFile ? configFile : "")
     , serverThread(NULL)
     , serverOK(false)
+    , port(_port)
 {
     ui->setupUi(this);
     ui->action_Stop->setEnabled(false);
@@ -150,7 +151,7 @@ void MainWindow::on_action_Run_triggered()
     ui->action_Stop->setEnabled(true);
     ui->action_Run->setEnabled(false);
 
-    serverThread = new ServerThread(configFileName);
+    serverThread = new ServerThread(configFileName, port);
     connect(serverThread, &ServerThread::error,       this, &MainWindow::serverError);
     connect(serverThread, &ServerThread::finished,    this, &MainWindow::serverStopped);
     serverThread->start();
@@ -254,11 +255,16 @@ void MainWindow::on_action_Run_triggered()
             case MASTER_DEVICE_IDENTIFIER:
             case DC_DEVICE_IDENTIFIER:
             case SERVO_DEVICE_IDENTIFIER:
+            case INDUSTRIAL_DUAL_ANALOG_IN_DEVICE_IDENTIFIER:
             case VOLTAGE_CURRENT_DEVICE_IDENTIFIER: {
                 DualSensor *widget = new DualSensor(this, deviceTypeName, uidStr);
                 calculatePositionAndAdd(row, col, layout, widget);
-                widget->setValueLabels(it->getLabel(), "Current mA");
-                widget->setLedOn(true);
+                if (it->getDeviceTypeId() == INDUSTRIAL_DUAL_ANALOG_IN_DEVICE_IDENTIFIER)
+                    widget->setValueLabels("Ch 0 (mV)", "Ch 1 (mV)");
+                else {
+                    widget->setValueLabels(it->getLabel(), "Current mA");
+                    widget->setLedOn(true);
+                }
                 it->setVisualizationClient(*widget);
                 vzw = widget;
                 break;

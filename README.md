@@ -26,3 +26,5 @@ Run:
 * or switch to ``TFStubserver/src/stubserver`` and run ``{your-path}/TFStubViz
 -d homestation.properties`` as a full example.
 * you can switch the configuration properties also by menu
+* the default port is 4225, you can change this with the option ``-d port``
+* start brickv (or your app) and use port 4225 instead of 4223

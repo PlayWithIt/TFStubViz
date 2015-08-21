@@ -56,6 +56,13 @@ void LedStrip::updateUi(const LedStripState *strip, unsigned to)
     QGridLayout *layout;
     if (numLeds == 0) {
         numLeds = strip->getNumLeds();
+
+        if (numLeds > 0) {
+            char buf[100];
+            sprintf(buf, "%d", numLeds);
+            ui->groupBox->setTitle(ui->groupBox->title() + " - " + QString(buf) + QString(" LEDs in the strip"));
+        }
+
         layout = new QGridLayout();
         layout->setHorizontalSpacing(3);
         layout->setVerticalSpacing(10);

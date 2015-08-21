@@ -17,7 +17,7 @@ class MainWindow : public QMainWindow
     void loadConfig();
 
 public:
-    explicit MainWindow(const char *configFile, QWidget *parent = 0);
+    explicit MainWindow(const char *configFile, int port);
     ~MainWindow();
 
 public slots:
@@ -39,6 +39,7 @@ private:
     QString      configFileName;
     ServerThread *serverThread;
     bool          serverOK;
+    int           port;
 };
 
 #endif // MAINWINDOW_H
