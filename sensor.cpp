@@ -15,12 +15,11 @@ Sensor::Sensor(QWidget *parent, const char *type, const char *uid, bool rotary)
     , uiP(rotary ? new Ui::Potentiometer() : NULL)
     , statusLED(NULL)
 {
+    QGroupBox *grp;
     if (rotary) {
         uiP->setupUi(this);
-        uiP->groupBox->setTitle(QString(type) + QString(" - ") + QString(uid));
-        setCheckBox(uiP->check);
-        connectTooltipTo(uiP->groupBox, uid);
 
+        grp      = uiP->groupBox;
         sensor   = uiP->sensor;
         labelMin = uiP->labelMin;
         labelMax = uiP->labelMax;
@@ -28,16 +27,22 @@ Sensor::Sensor(QWidget *parent, const char *type, const char *uid, bool rotary)
     }
     else {
         uiS->setupUi(this);
-        uiS->groupBox->setTitle(QString(type) + QString(" - ") + QString(uid));
         setCheckBox(uiS->check);
         connectTooltipTo(uiS->groupBox, uid);
 
+        grp      = uiS->groupBox;
         sensor   = uiS->sensor;
         labelMin = uiS->labelMin;
         labelMax = uiS->labelMax;
         label    = uiS->label;
         statusLED= uiS->statusLED;
     }
+
+    // make it possible to show only type or uid in dualsensor
+    if (uid != NULL && *uid)
+        grp->setTitle(QString(type) + QString(" - ") + QString(uid));
+    else
+        grp->setTitle(QString(type));
 
     connect(this,     &Sensor::valueChanged,             this, &Sensor::updateUi);
     connect(this,     &Sensor::ledChanged,               this, &Sensor::updateLed);

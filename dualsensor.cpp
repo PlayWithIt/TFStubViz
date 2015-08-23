@@ -4,8 +4,8 @@
 
 DualSensor::DualSensor(QWidget *parent, const char *type, const char *uid)
     : QWidget(parent)
-    , sensor0( new Sensor(this, type, uid) )
-    , sensor1( new Sensor(this, type, uid) )
+    , sensor0( new Sensor(this, type, NULL) )
+    , sensor1( new Sensor(this, uid, NULL) )
 {
     QHBoxLayout *layout = new QHBoxLayout;
 

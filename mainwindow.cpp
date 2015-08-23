@@ -230,22 +230,29 @@ void MainWindow::on_action_Run_triggered()
                 break;
             }
 
-            case DISTANCE_IR_DEVICE_IDENTIFIER:
-            case DISTANCE_US_DEVICE_IDENTIFIER:
-            case MOISTURE_DEVICE_IDENTIFIER:
-            case LINEAR_POTI_DEVICE_IDENTIFIER:
-            case SOUND_INTENSITY_DEVICE_IDENTIFIER:
             case AMBIENT_LIGHT_DEVICE_IDENTIFIER:
             case AMBIENT_LIGHT_V2_DEVICE_IDENTIFIER:
             case ANALOG_IN_V2_DEVICE_IDENTIFIER:
             case ANALOG_OUT_DEVICE_IDENTIFIER:
             case BAROMETER_DEVICE_IDENTIFIER:
+            case DISTANCE_IR_DEVICE_IDENTIFIER:
+            case DISTANCE_US_DEVICE_IDENTIFIER:
+            case DUST_DETECTOR_DEVICE_IDENTIFIER:
             case HUMIDITY_DEVICE_IDENTIFIER:
+            case LINEAR_POTI_DEVICE_IDENTIFIER:
             case LINE_DEVICE_IDENTIFIER:
+            case LOAD_CELL_DEVICE_IDENTIFIER:
+            case MOISTURE_DEVICE_IDENTIFIER:
             case PTC_DEVICE_IDENTIFIER:
+            case SOUND_INTENSITY_DEVICE_IDENTIFIER:
             case TEMPERATURE_DEVICE_IDENTIFIER: {
                 Sensor *widget = new Sensor(this, deviceTypeName, uidStr);
                 calculatePositionAndAdd(row, col, layout, widget);
+
+                if (it->getDeviceTypeId() == LOAD_CELL_DEVICE_IDENTIFIER) {
+                    widget->setLedOn(true);
+                }
+
                 widget->setValueLabel(it->getLabel());
                 it->setVisualizationClient(*widget);
                 vzw = widget;
