@@ -152,8 +152,8 @@ void MainWindow::on_action_Run_triggered()
     ui->action_Run->setEnabled(false);
 
     serverThread = new ServerThread(configFileName, port);
-    connect(serverThread, &ServerThread::error,       this, &MainWindow::serverError);
-    connect(serverThread, &ServerThread::finished,    this, &MainWindow::serverStopped);
+    connect(serverThread, &ServerThread::error,    this, &MainWindow::serverError);
+    connect(serverThread, &ServerThread::finished, this, &MainWindow::serverStopped);
     serverThread->start();
     serverOK = true;
 
@@ -235,6 +235,7 @@ void MainWindow::on_action_Run_triggered()
             case ANALOG_IN_V2_DEVICE_IDENTIFIER:
             case ANALOG_OUT_DEVICE_IDENTIFIER:
             case BAROMETER_DEVICE_IDENTIFIER:
+            case CO2_DEVICE_IDENTIFIER:
             case DISTANCE_IR_DEVICE_IDENTIFIER:
             case DISTANCE_US_DEVICE_IDENTIFIER:
             case DUST_DETECTOR_DEVICE_IDENTIFIER:
@@ -245,7 +246,8 @@ void MainWindow::on_action_Run_triggered()
             case MOISTURE_DEVICE_IDENTIFIER:
             case PTC_DEVICE_IDENTIFIER:
             case SOUND_INTENSITY_DEVICE_IDENTIFIER:
-            case TEMPERATURE_DEVICE_IDENTIFIER: {
+            case TEMPERATURE_DEVICE_IDENTIFIER:
+            case UV_LIGHT_DEVICE_IDENTIFIER: {
                 Sensor *widget = new Sensor(this, deviceTypeName, uidStr);
                 calculatePositionAndAdd(row, col, layout, widget);
 
@@ -305,6 +307,14 @@ void MainWindow::on_action_Run_triggered()
                 vzw = widget;
                 break;
             }
+
+            case MULTI_TOUCH_DEVICE_IDENTIFIER:
+            case LCD_20X4_DEVICE_IDENTIFIER:
+            case LED_STRIP_DEVICE_IDENTIFIER:
+                break;
+
+            default:
+                printf("Ignored device of type %d (%s)\n", it->getDeviceTypeId(), it->getDeviceTypeName().c_str());
         }
         if (vzw)
             vzw->setStackParameter(it->getPosition(), it->getConnectedUidStr());
