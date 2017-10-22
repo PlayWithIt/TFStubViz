@@ -13,7 +13,7 @@ MotionSensor::MotionSensor(QWidget *parent, const char *type, const char *uid)
     ui->groupBox->setTitle(QString(type) + QString(" - ") + QString(uid));
     connectTooltipTo(ui->groupBox, uid);
 
-    // Connect the 4 buttons of the LCD.
+    // Connect the button and the checkbox
     connect(this,       &MotionSensor::valueChanged, this, &MotionSensor::updateUi);
     connect(ui->button, &QPushButton::pressed,       this, &SensorInterface::activateManualControl);
     connect(ui->button, &QPushButton::released,      this, &MotionSensor::toggleState);

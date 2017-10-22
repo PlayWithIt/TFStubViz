@@ -4,11 +4,13 @@
 
 #include <QDebug>
 
+#include "dualbutton.h"
 #include "dualsensor.h"
 #include "lcd.h"
 #include "lcddisplayarea.h"
 #include "ledstrip.h"
 #include "motionsensor.h"
+#include "oled.h"
 #include "relay.h"
 #include "sensor.h"
 #include "touchpad.h"
@@ -198,6 +200,15 @@ void MainWindow::on_action_Run_triggered()
                 break;
             }
 
+            case OLED_128X64_DEVICE_IDENTIFIER:
+            case OLED_64X48_DEVICE_IDENTIFIER: {
+                OLED *w = new OLED(this, it->getUidStr().c_str(), it->getDeviceTypeId() == OLED_64X48_DEVICE_IDENTIFIER);
+                calculatePositionAndAdd(row, col, layout, w);
+                it->setVisualizationClient(*w);
+                vzw = w;
+                break;
+            }
+
             case LED_STRIP_DEVICE_IDENTIFIER: {
                 LedStrip *w = new LedStrip(this, it->getUidStr().c_str());
                 calculatePositionAndAdd(row, col, layout, w);
@@ -296,6 +307,14 @@ void MainWindow::on_action_Run_triggered()
                 break;
             }
 
+            case DUAL_BUTTON_DEVICE_IDENTIFIER: {
+                DualButton *widget = new DualButton(this, deviceTypeName, uidStr);
+                calculatePositionAndAdd(row, col, layout, widget);
+                it->setVisualizationClient(*widget);
+                vzw = widget;
+                break;
+            }
+
             case HALL_EFFECT_DEVICE_IDENTIFIER:
             case TILT_DEVICE_IDENTIFIER:
             case MOTION_DETECTOR_DEVICE_IDENTIFIER: {
@@ -308,9 +327,11 @@ void MainWindow::on_action_Run_triggered()
                 break;
             }
 
-            case MULTI_TOUCH_DEVICE_IDENTIFIER:
             case LCD_20X4_DEVICE_IDENTIFIER:
             case LED_STRIP_DEVICE_IDENTIFIER:
+            case MULTI_TOUCH_DEVICE_IDENTIFIER:
+            case OLED_128X64_DEVICE_IDENTIFIER:
+            case OLED_64X48_DEVICE_IDENTIFIER:
                 break;
 
             default:

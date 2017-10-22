@@ -16,7 +16,6 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     touchpad.cpp \
     lcd.cpp \
-    CharMask.cpp \
     serverthread.cpp \
     lcddisplayarea.cpp \
     sensor.cpp \
@@ -26,12 +25,13 @@ SOURCES += main.cpp\
     sensorinterface.cpp \
     dualsensor.cpp \
     visualizationwidget.cpp \
-    ledstrip.cpp
+    ledstrip.cpp \
+    dualbutton.cpp \
+    oled.cpp
 
 HEADERS  += mainwindow.h \
     touchpad.h \
     lcd.h \
-    CharMask.h \
     serverthread.h \
     lcddisplayarea.h \
     sensor.h \
@@ -41,15 +41,18 @@ HEADERS  += mainwindow.h \
     sensorinterface.h \
     dualsensor.h \
     visualizationwidget.h \
-    ledstrip.h
-
+    ledstrip.h \
+    dualbutton.h \
+    oled.h
 
 FORMS    += mainwindow.ui touchpad.ui lcd.ui \
     sensor.ui \
     relay.ui \
     motionsensor.ui \
     poti.ui \
-    ledstrip.ui
+    ledstrip.ui \
+    dualbutton.ui \
+    oled.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../TFStubserver/lib/Debug/release/ -lstubserver -lutils
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../TFStubserver/lib/Debug/debug/ -lstubserver -lutils

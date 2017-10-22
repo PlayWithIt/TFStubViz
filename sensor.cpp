@@ -116,13 +116,7 @@ void Sensor::actionTriggered(int action)
  */
 void Sensor::setLedOn(bool on)
 {
-    if (statusLED == NULL)
-        return;
-
-    if (on)
-        statusLED->setStyleSheet("background-color:blue;");
-    else
-        statusLED->setStyleSheet("background-color:gray;");
+    setLedColor(statusLED, on);
 }
 
 /**

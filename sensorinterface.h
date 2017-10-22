@@ -37,6 +37,13 @@ public:
     virtual bool useAsInputSource(unsigned sensorNo) const override;
     virtual int64_t getInputState(unsigned sensorNo) const override;
 
+    /**
+     * Sets the background color for the given LED to signal that the LED is on or off
+     * @param statusLED LED object to use
+     * @param on on = true
+     */
+    void setLedColor(QWidget *statusLED, bool on);
+
 signals:
     void valueChanged(int);
     void ledChanged(bool);

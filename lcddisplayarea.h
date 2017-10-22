@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QPen>
 
+#include <stubserver/CharMask.h>
 #include <utils/Mutexes.h>
 #include "buttonwidget.h"
 
@@ -21,6 +22,7 @@ class LCDDisplayArea : public ButtonWidget
     QPen           whitePen;
     QPen           grayPen;
 
+    stubserver::ScreenFont     lcdFont;
     const stubserver::LcdState *lcdState;
     std::mutex myMutex;
 
