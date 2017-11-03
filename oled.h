@@ -20,6 +20,7 @@ class OLED : public QWidget, public VisualizationWidget
     Q_OBJECT
 
     QPen          whitePen;
+    QPen          bluePen;
     QPen          grayPen;
     Ui::OledForm *ui;
     unsigned      lines, cols;   // virtual pixels on screen
@@ -27,13 +28,14 @@ class OLED : public QWidget, public VisualizationWidget
     const stubserver::OledState *oledState;
     std::mutex myMutex;
 
-    void clear();
+    void clear(bool inverted);
 
 public:
     /**
      * Init UI, if 'small' is true, then 64x48 pixels are used, otherwise 128x64.
      */
     explicit OLED(QWidget *parent, const char *uid, bool small);
+    ~OLED();
 
     virtual void notify(const stubserver::VisibleDeviceState &hint) override;
 

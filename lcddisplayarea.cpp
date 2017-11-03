@@ -140,7 +140,6 @@ void LCDDisplayArea::paintEvent(QPaintEvent * /* event */)
 
 void LCDDisplayArea::notify(const VisibleDeviceState &hint)
 {
-    utils::MutexLock lock(myMutex);
     //qDebug() << "LCDDisplayArea::notify " << hint.getChangeCode();
 
     if (hint.getChangeCode() == VisibleDeviceState::DISCONNECT)

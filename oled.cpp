@@ -18,6 +18,7 @@ static const unsigned PIXEL_SIZE = 3;
 OLED::OLED(QWidget *parent, const char *uid, bool small)
     : QWidget(parent)
     , whitePen(Qt::white, 1)
+    , bluePen(Qt::darkBlue, 1)
     , grayPen(Qt::gray, 1)
     , ui(new Ui::OledForm)
     , lines(small ? 48 : 64)   // 8 lines per byte
@@ -35,14 +36,17 @@ OLED::OLED(QWidget *parent, const char *uid, bool small)
         ui->screen->resize(size);
     }
 
-    clear();
+    clear(false);
 }
 
+OLED::~OLED() {
+    delete ui;
+}
 
-void OLED::clear()
+void OLED::clear(bool inverted)
 {
     QPalette Pal(palette());
-    Pal.setColor(QPalette::Background, Qt::darkBlue);
+    Pal.setColor(QPalette::Background, inverted ? Qt::white : Qt::darkBlue);
     ui->screen->setAutoFillBackground(true);
     ui->screen->setPalette(Pal);
 }
@@ -56,24 +60,27 @@ void OLED::paintEvent(QPaintEvent * /* event */)
     if (oledState == NULL)
         return;
 
-    QPixmap pixmap(cols*PIXEL_SIZE, lines*PIXEL_SIZE);
-    pixmap.fill(Qt::darkBlue);
+    bool inverted = oledState->isInverted();
 
-    // Max number of points
+    // set background color (blue as default, white if inverted)
+    const QRect &rect = ui->screen->geometry();
+    QPixmap pixmap(rect.width(), rect.height());
+    pixmap.fill(inverted ? Qt::white : Qt::darkBlue);
     QPainter painter(&pixmap);
-    painter.setPen(whitePen);
+
+    // Set pixel color
+    Qt::GlobalColor pixColor = inverted ? Qt::GlobalColor::darkBlue : Qt::GlobalColor::white;
 
     for (unsigned line = 0; line < lines; ++line)
     {
         for (unsigned actCol = 0; actCol < cols; ++actCol)
         {
             bool isOn = oledState->isPixelOn(line, actCol);
-            if (!isOn)
-                continue;
-
-            // add 2 pixels to X and 1 for Y to have 1 pixel border on the screen
-            QRect rect(1 + actCol * PIXEL_SIZE, 1 + line * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
-            painter.fillRect(rect, Qt::GlobalColor::white);
+            if (isOn) {
+                // add 2 pixels to X and 1 for Y to have 1 pixel border on the screen
+                QRect rect(1 + actCol * PIXEL_SIZE, 1 + line * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
+                painter.fillRect(rect, pixColor);
+            }
         }
     }
     ui->screen->setPixmap(pixmap);
@@ -84,11 +91,11 @@ void OLED::paintEvent(QPaintEvent * /* event */)
  */
 void OLED::notify(const stubserver::VisibleDeviceState &hint)
 {
-    utils::MutexLock lock(myMutex);
     if (hint.getChangeCode() == stubserver::VisibleDeviceState::DISCONNECT)
         oledState = NULL;
-    else {
+    else if (hint.getChangeCode() == stubserver::VisibleDeviceState::CONNECTED)
         oledState = dynamic_cast<const stubserver::OledState*>(&hint);
+    else {
         update();
     }
 }

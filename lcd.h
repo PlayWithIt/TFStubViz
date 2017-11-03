@@ -36,6 +36,7 @@ public:
      * @param parent the Qt parent object
      */
     explicit LCD(QWidget *parent, const char *uid);
+    ~LCD();
 
     LCDDisplayArea* getLCDDisplayArea() {
         return renderArea;

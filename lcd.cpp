@@ -40,6 +40,9 @@ LCD::LCD(QWidget *parent, const char *uid)
     connect(buttons[3], &QPushButton::released, this, [this]{ renderArea->buttonUp(3); });
 }
 
+LCD::~LCD() {
+    delete renderArea;
+}
 
 /**
  * Sets the buttons labels from one string (splits the string into single labels).
