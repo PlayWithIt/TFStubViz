@@ -13,7 +13,6 @@ Sensor::Sensor(QWidget *parent, const char *type, const char *uid, bool rotary)
     : SensorInterface(parent)
     , uiS(rotary ? NULL : new Ui::Sensor())
     , uiP(rotary ? new Ui::Potentiometer() : NULL)
-    , statusLED(NULL)
 {
     QGroupBox *grp;
     if (rotary) {
@@ -108,15 +107,6 @@ void Sensor::actionTriggered(int action)
     currentValue = newValue;
     sensor->setValue(newValue);
     label->setText(QString::number(newValue));
-}
-
-/**
- * @brief setLedOn turn the status LED on or OFF (for Bricks).
- * @param on if true, LED is on
- */
-void Sensor::setLedOn(bool on)
-{
-    setLedColor(statusLED, on);
 }
 
 /**

@@ -2,8 +2,9 @@
 #include <QDebug>
 #include "sensorinterface.h"
 
-SensorInterface::SensorInterface(QWidget *p)
+SensorInterface::SensorInterface(QWidget *p, QWidget *_statusLED)
   : QWidget(p)
+  , StatusLed(_statusLED)
   , checkBox(NULL)
   , currentValue(0)
   , counter(0)
@@ -83,20 +84,4 @@ bool SensorInterface::useAsInputSource(unsigned) const {
  */
 int64_t SensorInterface::getInputState(unsigned) const {
     return currentValue;
-}
-
-/**
- * Sets the background color for the given LED to signal that the LED is on or off
- * @param statusLED LED object to use
- * @param on on = true
- */
-void SensorInterface::setLedColor(QWidget *statusLED, bool on)
-{
-    if (statusLED == NULL)
-        return;
-
-    if (on)
-        statusLED->setStyleSheet("background-color:blue;");
-    else
-        statusLED->setStyleSheet("background-color:gray;");
 }

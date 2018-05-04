@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     visualizationwidget.cpp \
     ledstrip.cpp \
     dualbutton.cpp \
-    oled.cpp
+    oled.cpp \
+    statusled.cpp
 
 HEADERS  += mainwindow.h \
     touchpad.h \
@@ -43,7 +44,8 @@ HEADERS  += mainwindow.h \
     visualizationwidget.h \
     ledstrip.h \
     dualbutton.h \
-    oled.h
+    oled.h \
+    statusled.h
 
 FORMS    += mainwindow.ui touchpad.ui lcd.ui \
     sensor.ui \

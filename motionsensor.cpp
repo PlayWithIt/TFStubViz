@@ -13,6 +13,8 @@ MotionSensor::MotionSensor(QWidget *parent, const char *type, const char *uid)
     ui->groupBox->setTitle(QString(type) + QString(" - ") + QString(uid));
     connectTooltipTo(ui->groupBox, uid);
 
+    statusLED = ui->statusLED;
+
     // Connect the button and the checkbox
     connect(this,       &MotionSensor::valueChanged, this, &MotionSensor::updateUi);
     connect(ui->button, &QPushButton::pressed,       this, &SensorInterface::activateManualControl);

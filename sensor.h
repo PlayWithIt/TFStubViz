@@ -25,7 +25,6 @@ class Sensor : public SensorInterface
     QLabel            *labelMin;
     QLabel            *labelMax;
     QLabel            *label;
-    QWidget           *statusLED;
 
 public:
     explicit Sensor(QWidget *parent, const char *type, const char *uid, bool rotary = false);
@@ -36,12 +35,6 @@ public:
      * @param label - label string
      */
     void setValueLabel(const std::string &label) const;
-
-    /**
-     * @brief setLedOn turn the status LED on or OFF (for Bricks).
-     * @param on if true, LED is on
-     */
-    void setLedOn(bool on);
 
 public slots:
     // new sensor value

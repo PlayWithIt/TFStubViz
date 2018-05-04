@@ -6,8 +6,8 @@
 
 DualButton::DualButton(QWidget *parent, const char *type, const char *uid)
     : SensorInterface(parent)
-    , ledOn_l(false)
-    , ledOn_r(false)
+    , led_l(NULL)
+    , led_r(NULL)
     , ui(new Ui::DualButton)
 {
     ui->setupUi(this);
@@ -15,6 +15,9 @@ DualButton::DualButton(QWidget *parent, const char *type, const char *uid)
 
     ui->groupBox->setTitle(QString(type) + QString(" - ") + QString(uid));
     connectTooltipTo(ui->groupBox, uid);
+
+    led_l = new StatusLed(ui->statusLED_l);
+    led_r = new StatusLed(ui->statusLED_r);
 
     // Connect the button and the checkbox
     connect(this,         &DualButton::valueChanged, this, &DualButton::updateUi);
@@ -28,6 +31,8 @@ DualButton::DualButton(QWidget *parent, const char *type, const char *uid)
 DualButton::~DualButton()
 {
     setCheckBox(NULL);
+    delete led_l;
+    delete led_r;
     delete ui;
 }
 
@@ -44,8 +49,8 @@ void DualButton::notify(const stubserver::VisibleDeviceState &sensor)
 
         // change sensor value
         int newValue = state.getButtonStates();
-        ledOn_l = state.isLedOn_l();
-        ledOn_r = state.isLedOn_r();
+        led_l->setLedOn(state.isLedOn_l(), false);
+        led_r->setLedOn(state.isLedOn_r(), false);
 
         emit valueChanged(newValue);
     }
@@ -96,8 +101,8 @@ void DualButton::updateUi(int newValue)
         ui->button_r->setStyleSheet("QPushButton {background-color: #909090; color: black;}");
 
     // update LED status
-    setLedColor(ui->statusLED_l, ledOn_l);
-    setLedColor(ui->statusLED_r, ledOn_r);
+    led_l->setLedOn(led_l->isLedOn());
+    led_r->setLedOn(led_r->isLedOn());
 
     // TODO: this method was called due to manual change?
     //if (!manualControl)

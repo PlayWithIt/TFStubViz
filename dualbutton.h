@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "sensorinterface.h"
+#include "statusled.h"
 
 namespace Ui {
 class DualButton;
@@ -15,9 +16,9 @@ class DualButton : public SensorInterface
 {
     Q_OBJECT
 
-    uint64_t buttonState;
-    bool     ledOn_l;
-    bool     ledOn_r;
+    StatusLed *led_l;
+    StatusLed *led_r;
+    uint64_t  buttonState;
     Ui::DualButton *ui;
 
 public:

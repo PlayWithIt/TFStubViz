@@ -31,16 +31,11 @@ void ServerThread::doStop()
  */
 void ServerThread::run()
 {
-    qDebug("ServerThread started");
-
     try {
         std::string s = configName.toLatin1().data();
         stubserver::runServer(s.c_str(), port);
     }
     catch (const std::exception &e) {
-        emit error(QString(e.what()));
         utils::Log::error(e.what());
     }
-
-    qDebug("ServerThread done");
 }

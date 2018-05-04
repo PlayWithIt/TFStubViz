@@ -275,12 +275,17 @@ void MainWindow::on_action_Run_triggered()
             case MASTER_DEVICE_IDENTIFIER:
             case DC_DEVICE_IDENTIFIER:
             case SERVO_DEVICE_IDENTIFIER:
+            case OUTDOOR_WEATHER_DEVICE_IDENTIFIER:
             case INDUSTRIAL_DUAL_ANALOG_IN_DEVICE_IDENTIFIER:
             case VOLTAGE_CURRENT_DEVICE_IDENTIFIER: {
                 DualSensor *widget = new DualSensor(this, deviceTypeName, uidStr);
                 calculatePositionAndAdd(row, col, layout, widget);
                 if (it->getDeviceTypeId() == INDUSTRIAL_DUAL_ANALOG_IN_DEVICE_IDENTIFIER)
                     widget->setValueLabels("Ch 0 (mV)", "Ch 1 (mV)");
+                else if (it->getDeviceTypeId() == OUTDOOR_WEATHER_DEVICE_IDENTIFIER) {
+                    widget->setValueLabels("Ch 0 (°C)", "Ch 1 (°C)");
+                    widget->setLedOn(true);
+                }
                 else {
                     widget->setValueLabels(it->getLabel(), "Current mA");
                     widget->setLedOn(true);
@@ -322,6 +327,8 @@ void MainWindow::on_action_Run_triggered()
                 calculatePositionAndAdd(row, col, layout, widget);
                 if (it->getDeviceTypeId() == HALL_EFFECT_DEVICE_IDENTIFIER)
                     widget->showUseCounter();
+                else
+                    widget->setLedOn(true);
                 it->setVisualizationClient(*widget);
                 vzw = widget;
                 break;
@@ -335,7 +342,7 @@ void MainWindow::on_action_Run_triggered()
                 break;
 
             default:
-                printf("Ignored device of type %d (%s)\n", it->getDeviceTypeId(), it->getDeviceTypeName().c_str());
+                utils::Log() << "UI: ignored device of type " << it->getDeviceTypeId() << '(' << it->getDeviceTypeName() << ')';
         }
         if (vzw)
             vzw->setStackParameter(it->getPosition(), it->getConnectedUidStr());

@@ -41,7 +41,7 @@
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>200</y>
+      <y>220</y>
       <width>91</width>
       <height>23</height>
      </rect>
@@ -77,6 +77,34 @@
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QWidget" name="statusLED" native="true">
+    <property name="geometry">
+     <rect>
+      <x>84</x>
+      <y>170</y>
+      <width>12</width>
+      <height>12</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>10</width>
+      <height>10</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>15</width>
+      <height>15</height>
+     </size>
     </property>
    </widget>
   </widget>

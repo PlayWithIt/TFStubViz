@@ -3,6 +3,7 @@
 
 #include <QCheckBox>
 
+#include "statusled.h"
 #include "visualizationwidget.h"
 
 /**
@@ -10,7 +11,7 @@
  * is some kind of sensor). This class handles a manual control: a
  * derived class can have a checkbox to enable manual control.
  */
-class SensorInterface : public QWidget, public VisualizationWidget
+class SensorInterface : public QWidget, public StatusLed, public VisualizationWidget
 {
     Q_OBJECT
 
@@ -30,19 +31,12 @@ protected:
     }
 
 public:
-    SensorInterface(QWidget *p);
+    explicit SensorInterface(QWidget *p, QWidget *_statusLED = NULL);
 
     //----- VisualizationClient
     virtual void notify(const stubserver::VisibleDeviceState &state) override;
     virtual bool useAsInputSource(unsigned sensorNo) const override;
     virtual int64_t getInputState(unsigned sensorNo) const override;
-
-    /**
-     * Sets the background color for the given LED to signal that the LED is on or off
-     * @param statusLED LED object to use
-     * @param on on = true
-     */
-    void setLedColor(QWidget *statusLED, bool on);
 
 signals:
     void valueChanged(int);
