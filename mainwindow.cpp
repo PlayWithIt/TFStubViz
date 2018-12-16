@@ -200,6 +200,14 @@ void MainWindow::on_action_Run_triggered()
                 break;
             }
 
+            case LCD_128X64_DEVICE_IDENTIFIER: {
+                OLED *w = new OLED(this, it->getUidStr().c_str());
+                calculatePositionAndAdd(row, col, layout, w);
+                it->setVisualizationClient(*w);
+                vzw = w;
+                break;
+            }
+
             case OLED_128X64_DEVICE_IDENTIFIER:
             case OLED_64X48_DEVICE_IDENTIFIER: {
                 OLED *w = new OLED(this, it->getUidStr().c_str(), it->getDeviceTypeId() == OLED_64X48_DEVICE_IDENTIFIER);
@@ -335,6 +343,7 @@ void MainWindow::on_action_Run_triggered()
             }
 
             case LCD_20X4_DEVICE_IDENTIFIER:
+            case LCD_128X64_DEVICE_IDENTIFIER:
             case LED_STRIP_DEVICE_IDENTIFIER:
             case MULTI_TOUCH_DEVICE_IDENTIFIER:
             case OLED_128X64_DEVICE_IDENTIFIER:

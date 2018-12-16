@@ -7,7 +7,7 @@ VisualizationWidget::VisualizationWidget()
 { }
 
 /**
- * Sets the parameter where this device is located in the stack.
+ * Sets the parameter where this device is located in the brick stack.
  *
  * @param position - position a..d or 0..9
  * @param parent - parent UID

@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QPen>
 #include <QWidget>
+#include <QMouseEvent>
 
 #include <utils/Mutexes.h>
 #include "visualizationwidget.h"
@@ -24,23 +25,37 @@ class OLED : public QWidget, public VisualizationWidget
     QPen          grayPen;
     Ui::OledForm *ui;
     unsigned      lines, cols;   // virtual pixels on screen
+    bool          isLcd, mouseIsDown;
 
-    const stubserver::OledState *oledState;
+    const stubserver::DisplayState *displayState;
     std::mutex myMutex;
 
     void clear(bool inverted);
+
+    /**
+     * Calculate the screen pixel coordinate out of the QWidget event position
+     * @return true if the event was within the screen.
+     */
+    bool getScreenPixel(QPoint &point, unsigned &col, unsigned &line) const;
 
 public:
     /**
      * Init UI, if 'small' is true, then 64x48 pixels are used, otherwise 128x64.
      */
     explicit OLED(QWidget *parent, const char *uid, bool small);
+
+    /**
+     * Used to create the LCD only !
+     */
+    explicit OLED(QWidget *parent, const char *uid);
     ~OLED();
 
-    virtual void notify(const stubserver::VisibleDeviceState &hint) override;
+    void notify(const stubserver::VisibleDeviceState &hint) override;
 
 protected:
-    virtual void paintEvent(QPaintEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 };
 
