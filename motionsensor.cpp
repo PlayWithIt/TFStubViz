@@ -17,6 +17,7 @@ MotionSensor::MotionSensor(QWidget *parent, const char *type, const char *uid)
 
     // Connect the button and the checkbox
     connect(this,       &MotionSensor::valueChanged, this, &MotionSensor::updateUi);
+    connect(this,       &SensorInterface::ledChanged,this, &MotionSensor::updateLed);
     connect(ui->button, &QPushButton::pressed,       this, &SensorInterface::activateManualControl);
     connect(ui->button, &QPushButton::released,      this, &MotionSensor::toggleState);
     connect(ui->check,  &QCheckBox::stateChanged,    this, &SensorInterface::checkBoxClicked);
@@ -64,4 +65,13 @@ void MotionSensor::updateUi(int newValue)
         ui->button->setStyleSheet("QPushButton {background-color: #909090; color: black;}");
         ui->button->setText("IDLE");
     }
+}
+
+/**
+ * @brief MotionSensor::updateLed signal receiver method when the led state changes
+ * @param ledValue
+ */
+void MotionSensor::updateLed(bool ledValue)
+{
+    setLedOn(ledValue);
 }

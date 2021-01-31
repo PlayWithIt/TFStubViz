@@ -3,7 +3,7 @@
 #include "visualizationwidget.h"
 
 VisualizationWidget::VisualizationWidget()
-  : widget(NULL), position('?'), parent("?")
+  : widget(nullptr), position('?'), parent("?")
 { }
 
 /**

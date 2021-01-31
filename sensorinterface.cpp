@@ -38,6 +38,12 @@ void SensorInterface::checkBoxClicked(int v)
         checkBox->setEnabled(manualControl);
 }
 
+void SensorInterface::setMinMax(int _min, int _max)
+{
+    min = _min;
+    max = _max;
+}
+
 /**
  * Receives the notification when the sensor value changes.
  */
@@ -58,15 +64,17 @@ void SensorInterface::notify(const stubserver::VisibleDeviceState &sensor)
 
         // change sensor value
         int newValue = state.getSensorValue();
-        if (!minMaxSet) {
+        if (!minMaxSet && state.getMin() < state.getMax()) {
             this->min = state.getMin();
             this->max = state.getMax();
         }
+        // qDebug("SensorInterface::notify - value change %d", newValue);
+
         counter = state.getCounter();
         emit valueChanged(newValue);
     }
     catch (const std::exception &e) {
-        qCritical("Caught exception: %s", e.what());
+        qCritical("SensorInterface::notify - caught exception: %s", e.what());
     }
 }
 

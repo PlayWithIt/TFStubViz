@@ -11,8 +11,8 @@ using namespace stubserver;
 
 Sensor::Sensor(QWidget *parent, const char *type, const char *uid, bool rotary)
     : SensorInterface(parent)
-    , uiS(rotary ? NULL : new Ui::Sensor())
-    , uiP(rotary ? new Ui::Potentiometer() : NULL)
+    , uiS(rotary ? nullptr : new Ui::Sensor())
+    , uiP(rotary ? new Ui::Potentiometer() : nullptr)
 {
     QGroupBox *grp;
     if (rotary) {
@@ -38,7 +38,7 @@ Sensor::Sensor(QWidget *parent, const char *type, const char *uid, bool rotary)
     }
 
     // make it possible to show only type or uid in dualsensor
-    if (uid != NULL && *uid)
+    if (uid && *uid)
         grp->setTitle(QString(type) + QString(" - ") + QString(uid));
     else
         grp->setTitle(QString(type));
@@ -53,7 +53,7 @@ Sensor::Sensor(QWidget *parent, const char *type, const char *uid, bool rotary)
 
 Sensor::~Sensor()
 {
-    setCheckBox(NULL);
+    setCheckBox(nullptr);
     delete uiP;
     delete uiS;
 }

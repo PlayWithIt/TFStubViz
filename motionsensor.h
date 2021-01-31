@@ -26,6 +26,9 @@ public:
 public slots:
     void updateUi(int);
     void toggleState();
+
+    // new led value, signal emitted by SensorInterface
+    void updateLed(bool);
 };
 
 #endif // MOTIONSENSOR_H

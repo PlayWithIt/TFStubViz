@@ -6,6 +6,14 @@ A Qt based GUI for the software emulator for Tinkerforge Hardware
 
 In order to build this project you'll need the TFStubserver project too.
 
+While TFStubserver is purely command line based, this user interface includes
+the command line emulator and offers basic support to display current sensors
+and has the possibility to manually override sensor values vis sliders and
+shows the content of a 'simulated screen'.
+
+The UI miuight look like this with a sample configuration for sensors and an LCD:
+![main window](./mainwindow.png)
+
 Requirements:
 -------------
 * Linux

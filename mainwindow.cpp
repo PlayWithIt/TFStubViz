@@ -8,8 +8,10 @@
 #include "dualsensor.h"
 #include "lcd.h"
 #include "lcddisplayarea.h"
+#include "ledbutton.h"
 #include "ledstrip.h"
 #include "motionsensor.h"
+#include "multisensor.h"
 #include "oled.h"
 #include "relay.h"
 #include "sensor.h"
@@ -26,10 +28,10 @@
 
 
 MainWindow::MainWindow(const char *configFile, int _port)
-    : QMainWindow(0)
+    : QMainWindow(nullptr)
     , ui(new Ui::MainWindow)
     , configFileName(configFile ? configFile : "")
-    , serverThread(NULL)
+    , serverThread(nullptr)
     , serverOK(false)
     , port(_port)
 {
@@ -54,7 +56,7 @@ MainWindow::~MainWindow()
         on_action_Stop_triggered();
         serverThread->wait();
         delete serverThread;
-        serverThread = NULL;
+        serverThread = nullptr;
     }
 
     delete ui;
@@ -72,18 +74,16 @@ void MainWindow::loadConfig()
 
 void MainWindow::serverStopped()
 {
-    qDebug("serverStopped()");
-
-    statusBar()->showMessage(tr("Server not running"));
+    statusBar()->showMessage(tr("Server stopped"));
 
     ui->action_Stop->setEnabled(false);
     ui->action_Run->setEnabled(true);
 
-    QGridLayout* layout = (QGridLayout*) ui->scrollAreaWidgetContents->layout();
+    QGridLayout* layout = static_cast<QGridLayout*>(ui->scrollAreaWidgetContents->layout());
     if (layout) {
         // remove old widgets
         QLayoutItem *child;
-        while ((child = layout->takeAt(0)) != NULL)
+        while ((child = layout->takeAt(0)) != nullptr)
         {
             delete child->widget();
             delete child;
@@ -92,7 +92,7 @@ void MainWindow::serverStopped()
 
     serverThread->wait();
     delete serverThread;
-    serverThread = NULL;
+    serverThread = nullptr;
 }
 
 
@@ -165,7 +165,7 @@ void MainWindow::on_action_Run_triggered()
     if (!serverOK || !serverThread)
         return;
 
-    QGridLayout* layout = (QGridLayout*) ui->scrollAreaWidgetContents->layout();
+    QGridLayout* layout = static_cast<QGridLayout*>(ui->scrollAreaWidgetContents->layout());
     if (!layout) {
         layout = new QGridLayout();
         layout->setVerticalSpacing(20);
@@ -179,10 +179,11 @@ void MainWindow::on_action_Run_triggered()
     // first add the wide items
     for (auto it : devices)
     {
-        VisualizationWidget *vzw = NULL;
+        VisualizationWidget *vzw = nullptr;
 
         switch (it->getDeviceTypeId()) {
-            case MULTI_TOUCH_DEVICE_IDENTIFIER: {
+        case MULTI_TOUCH_V2_DEVICE_IDENTIFIER:
+        case MULTI_TOUCH_DEVICE_IDENTIFIER: {
                 TouchPad *touch = new TouchPad(this, it->getUidStr().c_str());
                 calculatePositionAndAdd(row, col, layout, touch);
                 touch->setLabels(it->getLabel());
@@ -224,6 +225,14 @@ void MainWindow::on_action_Run_triggered()
                 vzw = w;
                 break;
             }
+
+            case AIR_QUALITY_DEVICE_IDENTIFIER: {
+                MultiSensor *w = new MultiSensor(this, "AirQuality", it->getUidStr().c_str(), 4);
+                calculatePositionAndAdd(row, col, layout, w);
+                it->setVisualizationClient(*w);
+                vzw = w;
+                break;
+            }
         }
         if (vzw)
             vzw->setStackParameter(it->getPosition(), it->getConnectedUidStr());
@@ -234,7 +243,7 @@ void MainWindow::on_action_Run_triggered()
     {
         const char *deviceTypeName = it->getDeviceTypeName().c_str();
         const char *uidStr         = it->getUidStr().c_str();
-        VisualizationWidget *vzw   = NULL;
+        VisualizationWidget *vzw   = nullptr;
 
         switch (it->getDeviceTypeId()) {
 
@@ -254,23 +263,26 @@ void MainWindow::on_action_Run_triggered()
             case ANALOG_IN_V2_DEVICE_IDENTIFIER:
             case ANALOG_OUT_DEVICE_IDENTIFIER:
             case BAROMETER_DEVICE_IDENTIFIER:
-            case CO2_DEVICE_IDENTIFIER:
+            case CO2_V2_DEVICE_IDENTIFIER:
             case DISTANCE_IR_DEVICE_IDENTIFIER:
             case DISTANCE_US_DEVICE_IDENTIFIER:
             case DUST_DETECTOR_DEVICE_IDENTIFIER:
             case HUMIDITY_DEVICE_IDENTIFIER:
+            case HUMIDITY_V2_DEVICE_IDENTIFIER:
             case LINEAR_POTI_DEVICE_IDENTIFIER:
             case LINE_DEVICE_IDENTIFIER:
             case LOAD_CELL_DEVICE_IDENTIFIER:
+            case LOAD_CELL_V2_DEVICE_IDENTIFIER:
             case MOISTURE_DEVICE_IDENTIFIER:
             case PTC_DEVICE_IDENTIFIER:
             case SOUND_INTENSITY_DEVICE_IDENTIFIER:
             case TEMPERATURE_DEVICE_IDENTIFIER:
+            case TEMPERATURE_V2_DEVICE_IDENTIFIER:
             case UV_LIGHT_DEVICE_IDENTIFIER: {
                 Sensor *widget = new Sensor(this, deviceTypeName, uidStr);
                 calculatePositionAndAdd(row, col, layout, widget);
 
-                if (it->getDeviceTypeId() == LOAD_CELL_DEVICE_IDENTIFIER) {
+                if (it->getDeviceTypeId() == LOAD_CELL_DEVICE_IDENTIFIER || it->getDeviceTypeId() == LOAD_CELL_V2_DEVICE_IDENTIFIER) {
                     widget->setLedOn(true);
                 }
 
@@ -328,9 +340,18 @@ void MainWindow::on_action_Run_triggered()
                 break;
             }
 
+            case RGB_LED_BUTTON_DEVICE_IDENTIFIER: {
+                LedButton *widget = new LedButton(this, deviceTypeName, uidStr);
+                calculatePositionAndAdd(row, col, layout, widget);
+                it->setVisualizationClient(*widget);
+                vzw = widget;
+                break;
+            }
+
             case HALL_EFFECT_DEVICE_IDENTIFIER:
             case TILT_DEVICE_IDENTIFIER:
-            case MOTION_DETECTOR_DEVICE_IDENTIFIER: {
+            case MOTION_DETECTOR_DEVICE_IDENTIFIER:
+            case MOTION_DETECTOR_V2_DEVICE_IDENTIFIER: {
                 MotionSensor *widget = new MotionSensor(this, deviceTypeName, uidStr);
                 calculatePositionAndAdd(row, col, layout, widget);
                 if (it->getDeviceTypeId() == HALL_EFFECT_DEVICE_IDENTIFIER)
@@ -342,9 +363,11 @@ void MainWindow::on_action_Run_triggered()
                 break;
             }
 
+            case AIR_QUALITY_DEVICE_IDENTIFIER:
             case LCD_20X4_DEVICE_IDENTIFIER:
             case LCD_128X64_DEVICE_IDENTIFIER:
             case LED_STRIP_DEVICE_IDENTIFIER:
+            case MULTI_TOUCH_V2_DEVICE_IDENTIFIER:
             case MULTI_TOUCH_DEVICE_IDENTIFIER:
             case OLED_128X64_DEVICE_IDENTIFIER:
             case OLED_64X48_DEVICE_IDENTIFIER:

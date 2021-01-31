@@ -28,7 +28,9 @@ SOURCES += main.cpp\
     ledstrip.cpp \
     dualbutton.cpp \
     oled.cpp \
-    statusled.cpp
+    statusled.cpp \
+    multisensor.cpp \
+    ledbutton.cpp
 
 HEADERS  += mainwindow.h \
     touchpad.h \
@@ -45,7 +47,9 @@ HEADERS  += mainwindow.h \
     ledstrip.h \
     dualbutton.h \
     oled.h \
-    statusled.h
+    statusled.h \
+    multisensor.h \
+    ledbutton.h
 
 FORMS    += mainwindow.ui touchpad.ui lcd.ui \
     sensor.ui \
@@ -54,7 +58,8 @@ FORMS    += mainwindow.ui touchpad.ui lcd.ui \
     poti.ui \
     ledstrip.ui \
     dualbutton.ui \
-    oled.ui
+    oled.ui \
+    ledbutton.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../TFStubserver/lib/Debug/release/ -lstubserver -lutils
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../TFStubserver/lib/Debug/debug/ -lstubserver -lutils

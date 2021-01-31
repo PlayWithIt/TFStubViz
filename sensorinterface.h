@@ -18,8 +18,6 @@ class SensorInterface : public QWidget, public StatusLed, public VisualizationWi
 protected:
     QCheckBox *checkBox;
 
-    static const int MAX_INTERNAL_SENSORS = 4;
-
     int      currentValue;
     unsigned counter;
     int      min, max;
@@ -31,12 +29,14 @@ protected:
     }
 
 public:
-    explicit SensorInterface(QWidget *p, QWidget *_statusLED = NULL);
+    explicit SensorInterface(QWidget *p, QWidget *_statusLED = nullptr);
 
     //----- VisualizationClient
     virtual void notify(const stubserver::VisibleDeviceState &state) override;
     virtual bool useAsInputSource(unsigned sensorNo) const override;
     virtual int64_t getInputState(unsigned sensorNo) const override;
+
+    void setMinMax(int _min, int _max);
 
 signals:
     void valueChanged(int);

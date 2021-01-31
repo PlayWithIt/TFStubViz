@@ -117,6 +117,7 @@ void OLED::mousePressEvent(QMouseEvent *event)
         if (getScreenPixel(mouseDown, col, line)) {
             if (displayState)
                 displayState->startTouch(col, line);
+            // printf("mouse DOWN %3u %3d %c\n", displayState->getTouchX(), displayState->getTouchY(), displayState->getGesture());
             mouseIsDown = true;
         }
     }
@@ -137,7 +138,7 @@ void OLED::mouseReleaseEvent(QMouseEvent *event)
         if (getScreenPixel(mouseDown, col, line)) {
             if (displayState)
                 displayState->endTouch(col, line);
-            printf("mouse UP %u %d %c\n", displayState->getTouchX(), displayState->getTouchY(), displayState->getGesture());
+            // printf("mouse UP   %3u %3d %c\n", displayState->getTouchX(), displayState->getTouchY(), displayState->getGesture());
         }
         mouseIsDown = false;
     }
