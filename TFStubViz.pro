@@ -13,6 +13,7 @@ TEMPLATE = app
 QMAKE_CXXFLAGS += -std=c++11 -Wall -Wignored-qualifiers -Wparentheses -Woverloaded-virtual -Wsign-compare -Werror
 
 SOURCES += main.cpp\
+    digitalin.cpp \
         mainwindow.cpp \
     touchpad.cpp \
     lcd.cpp \
@@ -33,6 +34,7 @@ SOURCES += main.cpp\
     ledbutton.cpp
 
 HEADERS  += mainwindow.h \
+    digitalin.h \
     touchpad.h \
     lcd.h \
     serverthread.h \
@@ -52,6 +54,7 @@ HEADERS  += mainwindow.h \
     ledbutton.h
 
 FORMS    += mainwindow.ui touchpad.ui lcd.ui \
+    digitalin.ui \
     sensor.ui \
     relay.ui \
     motionsensor.ui \

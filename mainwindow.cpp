@@ -4,6 +4,7 @@
 
 #include <QDebug>
 
+#include "digitalin.h"
 #include "dualbutton.h"
 #include "dualsensor.h"
 #include "lcd.h"
@@ -250,7 +251,9 @@ void MainWindow::on_action_Run_triggered()
             case DUAL_RELAY_DEVICE_IDENTIFIER:
             case REMOTE_SWITCH_DEVICE_IDENTIFIER:
             case INDUSTRIAL_QUAD_RELAY_DEVICE_IDENTIFIER:
-            case INDUSTRIAL_DIGITAL_OUT_4_DEVICE_IDENTIFIER: {
+            case INDUSTRIAL_QUAD_RELAY_V2_DEVICE_IDENTIFIER:
+            case INDUSTRIAL_DIGITAL_OUT_4_DEVICE_IDENTIFIER:
+            case INDUSTRIAL_DIGITAL_OUT_4_V2_DEVICE_IDENTIFIER: {
                 Relay *relay = new Relay(this, deviceTypeName, uidStr);
                 calculatePositionAndAdd(row, col, layout, relay);
                 it->setVisualizationClient(*relay);
@@ -292,6 +295,7 @@ void MainWindow::on_action_Run_triggered()
                 break;
             }
 
+            case HAT_DEVICE_IDENTIFIER:
             case MASTER_DEVICE_IDENTIFIER:
             case DC_DEVICE_IDENTIFIER:
             case SERVO_DEVICE_IDENTIFIER:
@@ -326,6 +330,15 @@ void MainWindow::on_action_Run_triggered()
 
             case ROTARY_POTI_DEVICE_IDENTIFIER: {
                 Sensor *widget = new Sensor(this, deviceTypeName, uidStr, true);
+                calculatePositionAndAdd(row, col, layout, widget);
+                it->setVisualizationClient(*widget);
+                vzw = widget;
+                break;
+            }
+
+            case INDUSTRIAL_DIGITAL_IN_4_DEVICE_IDENTIFIER:
+            case INDUSTRIAL_DIGITAL_IN_4_V2_DEVICE_IDENTIFIER: {
+                DigitalIn *widget = new DigitalIn(this, deviceTypeName, uidStr);
                 calculatePositionAndAdd(row, col, layout, widget);
                 it->setVisualizationClient(*widget);
                 vzw = widget;
