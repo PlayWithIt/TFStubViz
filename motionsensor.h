@@ -16,7 +16,7 @@ class MotionSensor : public SensorInterface
     bool useCounter;
 
 public:
-    explicit MotionSensor(QWidget *parent, const char *type, const char *uid);
+    explicit MotionSensor(QWidget *parent, const char *title);
     ~MotionSensor();
 
     void showUseCounter() {

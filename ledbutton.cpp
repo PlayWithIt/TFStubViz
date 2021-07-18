@@ -4,7 +4,7 @@
 #include "ledbutton.h"
 #include "ui_ledbutton.h"
 
-LedButton::LedButton(QWidget *parent, const char *type, const char *uid)
+LedButton::LedButton(QWidget *parent, const char *title)
     : SensorInterface(parent)
     , led_l(nullptr)
     , ui(new Ui::LedButton)
@@ -15,8 +15,8 @@ LedButton::LedButton(QWidget *parent, const char *type, const char *uid)
     ui->setupUi(this);
     setCheckBox(ui->check);
 
-    ui->groupBox->setTitle(QString(type) + QString(" - ") + QString(uid));
-    connectTooltipTo(ui->groupBox, uid);
+    ui->groupBox->setTitle(title);
+    connectTooltipTo(ui->groupBox);
 
     led_l = new StatusLed(ui->statusLED);
 

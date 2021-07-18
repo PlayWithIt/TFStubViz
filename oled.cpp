@@ -2,10 +2,6 @@
 #include "oled.h"
 #include "ui_oled.h"
 
-/**
- * Size of the internal OLED border (just one Pixels)
- */
-static const unsigned BORDER_SIZE = 1;
 
 /**
  * Size for each pixel in the OLED screen in Pixels
@@ -17,7 +13,7 @@ using stubserver::DisplayState;
 /**
  * Init UI, if 'small' is true, then 64x48 pixels are used, otherwise 128x64.
  */
-OLED::OLED(QWidget *parent, const char *uid, bool small)
+OLED::OLED(QWidget *parent, const char *title, bool small)
     : QWidget(parent)
     , whitePen(Qt::white, 1)
     , bluePen(Qt::darkBlue, 1)
@@ -29,10 +25,7 @@ OLED::OLED(QWidget *parent, const char *uid, bool small)
     , mouseIsDown(false)
 {
     ui->setupUi(this);
-
-    char label[32];
-    sprintf(label, "OLED %dx%d", cols, lines);
-    ui->groupBox->setTitle(QString(label) + QString(" - ") + QString(uid));
+    ui->groupBox->setTitle(title);
 
     if (small) {
         QSize size(cols * PIXEL_SIZE + 2, lines * PIXEL_SIZE + 2);
@@ -46,7 +39,7 @@ OLED::OLED(QWidget *parent, const char *uid, bool small)
 /**
  * Used to create the LCD 128x64.
  */
-OLED::OLED(QWidget *parent, const char *uid)
+OLED::OLED(QWidget *parent, const char *title)
     : QWidget(parent)
     , whitePen(Qt::black, 1)
     , bluePen(Qt::white, 1)
@@ -58,11 +51,7 @@ OLED::OLED(QWidget *parent, const char *uid)
     , mouseIsDown(false)
 {
     ui->setupUi(this);
-
-    char label[32];
-    sprintf(label, "LCD %dx%d", cols, lines);
-    ui->groupBox->setTitle(QString(label) + QString(" - ") + QString(uid));
-
+    ui->groupBox->setTitle(title);
     clear(false);
 }
 

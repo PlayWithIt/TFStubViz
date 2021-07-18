@@ -4,7 +4,7 @@
 #include "digitalin.h"
 #include "ui_digitalin.h"
 
-DigitalIn::DigitalIn(QWidget *parent, const char *type, const char *uid)
+DigitalIn::DigitalIn(QWidget *parent, const char *title)
     : SensorInterface(parent)
     , led0(NULL)
     , led1(NULL)
@@ -15,8 +15,8 @@ DigitalIn::DigitalIn(QWidget *parent, const char *type, const char *uid)
     ui->setupUi(this);
     setCheckBox(ui->check);
 
-    ui->groupBox->setTitle(QString(type) + QString(" - ") + QString(uid));
-    connectTooltipTo(ui->groupBox, uid);
+    ui->groupBox->setTitle(title);
+    connectTooltipTo(ui->groupBox);
 
     led0 = new StatusLed(ui->statusLED0);
     led1 = new StatusLed(ui->statusLED1);

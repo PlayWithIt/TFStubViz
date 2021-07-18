@@ -14,7 +14,7 @@ class TouchPad : public ButtonWidget, private Ui::TouchPadForm
     Q_OBJECT
 
 public:
-    explicit TouchPad(QWidget *parent, const char *uid);
+    explicit TouchPad(QWidget *parent, const char *title);
 };
 
 #endif // TOUCHPAD_H

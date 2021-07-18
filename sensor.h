@@ -27,7 +27,7 @@ class Sensor : public SensorInterface
     QLabel            *label;
 
 public:
-    explicit Sensor(QWidget *parent, const char *type, const char *uid, bool rotary = false);
+    explicit Sensor(QWidget *parent, const char *title, bool rotary);
     ~Sensor();
 
     /**

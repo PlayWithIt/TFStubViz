@@ -24,7 +24,7 @@ public:
     }
 
     //----- VisualizationWidget
-    virtual void setStackParameter(char position, const std::string &parent);
+    virtual void setStackParameter(char position, const std::string &parent) override;
 
     //----- VisualizationClient
     virtual void notify(const stubserver::VisibleDeviceState &state) override;

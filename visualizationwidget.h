@@ -14,23 +14,20 @@ class VisualizationWidget : public stubserver::VisualizationClient
     QWidget *widget;
 
     char position;
-    std::string uid;
     std::string parent;
 
 protected:
     VisualizationWidget();
 
-    void connectTooltipTo(QWidget *w, const char *uid) {
+    void connectTooltipTo(QWidget *w) {
         widget = w;
-        if (uid)
-            this->uid = uid;
     }
 
 public:
     /**
      * Sets the parameter where this device is located in the brick stack.
      *
-     * @param position - position a..d or 0..9
+     * @param position - position A..I or 0..9
      * @param parent - parent UID
      */
     virtual void setStackParameter(char position, const std::string &parent);

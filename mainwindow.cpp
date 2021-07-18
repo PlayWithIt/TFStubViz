@@ -180,12 +180,18 @@ void MainWindow::on_action_Run_triggered()
     // first add the wide items
     for (auto it : devices)
     {
+        // exclude from UI ...
+        if (it->doHideInUI())
+            continue;
+
+        const char *deviceTitle = it->getTitle().c_str();
+        const char *uidStr      = it->getUidStr().c_str();
         VisualizationWidget *vzw = nullptr;
 
         switch (it->getDeviceTypeId()) {
         case MULTI_TOUCH_V2_DEVICE_IDENTIFIER:
         case MULTI_TOUCH_DEVICE_IDENTIFIER: {
-                TouchPad *touch = new TouchPad(this, it->getUidStr().c_str());
+                TouchPad *touch = new TouchPad(this, deviceTitle);
                 calculatePositionAndAdd(row, col, layout, touch);
                 touch->setLabels(it->getLabel());
                 it->setVisualizationClient(*touch);
@@ -194,7 +200,7 @@ void MainWindow::on_action_Run_triggered()
             }
 
             case LCD_20X4_DEVICE_IDENTIFIER: {
-                LCD *lcd = new LCD(this, it->getUidStr().c_str());
+                LCD *lcd = new LCD(this, uidStr);
                 calculatePositionAndAdd(row, col, layout, lcd);
                 lcd->setLabels(it->getLabel());
                 it->setVisualizationClient(*(lcd->getLCDDisplayArea()));
@@ -203,7 +209,7 @@ void MainWindow::on_action_Run_triggered()
             }
 
             case LCD_128X64_DEVICE_IDENTIFIER: {
-                OLED *w = new OLED(this, it->getUidStr().c_str());
+                OLED *w = new OLED(this, deviceTitle);
                 calculatePositionAndAdd(row, col, layout, w);
                 it->setVisualizationClient(*w);
                 vzw = w;
@@ -212,7 +218,7 @@ void MainWindow::on_action_Run_triggered()
 
             case OLED_128X64_DEVICE_IDENTIFIER:
             case OLED_64X48_DEVICE_IDENTIFIER: {
-                OLED *w = new OLED(this, it->getUidStr().c_str(), it->getDeviceTypeId() == OLED_64X48_DEVICE_IDENTIFIER);
+                OLED *w = new OLED(this, deviceTitle, it->getDeviceTypeId() == OLED_64X48_DEVICE_IDENTIFIER);
                 calculatePositionAndAdd(row, col, layout, w);
                 it->setVisualizationClient(*w);
                 vzw = w;
@@ -220,7 +226,7 @@ void MainWindow::on_action_Run_triggered()
             }
 
             case LED_STRIP_DEVICE_IDENTIFIER: {
-                LedStrip *w = new LedStrip(this, it->getUidStr().c_str());
+                LedStrip *w = new LedStrip(this, uidStr);
                 calculatePositionAndAdd(row, col, layout, w);
                 it->setVisualizationClient(*w);
                 vzw = w;
@@ -228,7 +234,7 @@ void MainWindow::on_action_Run_triggered()
             }
 
             case AIR_QUALITY_DEVICE_IDENTIFIER: {
-                MultiSensor *w = new MultiSensor(this, "AirQuality", it->getUidStr().c_str(), 4);
+                MultiSensor *w = new MultiSensor(this, deviceTitle, uidStr, 4);
                 calculatePositionAndAdd(row, col, layout, w);
                 it->setVisualizationClient(*w);
                 vzw = w;
@@ -242,8 +248,12 @@ void MainWindow::on_action_Run_triggered()
     // add small items
     for (auto it : devices)
     {
-        const char *deviceTypeName = it->getDeviceTypeName().c_str();
-        const char *uidStr         = it->getUidStr().c_str();
+        // exclude from UI ...
+        if (it->doHideInUI())
+            continue;
+
+        const char *deviceTitle = it->getTitle().c_str();
+        const char *uidStr      = it->getUidStr().c_str();
         VisualizationWidget *vzw   = nullptr;
 
         switch (it->getDeviceTypeId()) {
@@ -254,7 +264,7 @@ void MainWindow::on_action_Run_triggered()
             case INDUSTRIAL_QUAD_RELAY_V2_DEVICE_IDENTIFIER:
             case INDUSTRIAL_DIGITAL_OUT_4_DEVICE_IDENTIFIER:
             case INDUSTRIAL_DIGITAL_OUT_4_V2_DEVICE_IDENTIFIER: {
-                Relay *relay = new Relay(this, deviceTypeName, uidStr);
+                Relay *relay = new Relay(this, deviceTitle, it->getDeviceTypeId() == DUAL_RELAY_DEVICE_IDENTIFIER);
                 calculatePositionAndAdd(row, col, layout, relay);
                 it->setVisualizationClient(*relay);
                 vzw = relay;
@@ -270,6 +280,7 @@ void MainWindow::on_action_Run_triggered()
             case DISTANCE_IR_DEVICE_IDENTIFIER:
             case DISTANCE_US_DEVICE_IDENTIFIER:
             case DUST_DETECTOR_DEVICE_IDENTIFIER:
+            case HALL_EFFECT_V2_DEVICE_IDENTIFIER:
             case HUMIDITY_DEVICE_IDENTIFIER:
             case HUMIDITY_V2_DEVICE_IDENTIFIER:
             case LINEAR_POTI_DEVICE_IDENTIFIER:
@@ -282,10 +293,12 @@ void MainWindow::on_action_Run_triggered()
             case TEMPERATURE_DEVICE_IDENTIFIER:
             case TEMPERATURE_V2_DEVICE_IDENTIFIER:
             case UV_LIGHT_DEVICE_IDENTIFIER: {
-                Sensor *widget = new Sensor(this, deviceTypeName, uidStr);
+                Sensor *widget = new Sensor(this, deviceTitle, false);
                 calculatePositionAndAdd(row, col, layout, widget);
 
-                if (it->getDeviceTypeId() == LOAD_CELL_DEVICE_IDENTIFIER || it->getDeviceTypeId() == LOAD_CELL_V2_DEVICE_IDENTIFIER) {
+                if (it->getDeviceTypeId() == LOAD_CELL_DEVICE_IDENTIFIER ||
+                        it->getDeviceTypeId() == LOAD_CELL_V2_DEVICE_IDENTIFIER ||
+                        it->getDeviceTypeId() == HALL_EFFECT_V2_DEVICE_IDENTIFIER) {
                     widget->setLedOn(true);
                 }
 
@@ -302,7 +315,7 @@ void MainWindow::on_action_Run_triggered()
             case OUTDOOR_WEATHER_DEVICE_IDENTIFIER:
             case INDUSTRIAL_DUAL_ANALOG_IN_DEVICE_IDENTIFIER:
             case VOLTAGE_CURRENT_DEVICE_IDENTIFIER: {
-                DualSensor *widget = new DualSensor(this, deviceTypeName, uidStr);
+                DualSensor *widget = new DualSensor(this, deviceTitle, uidStr);
                 calculatePositionAndAdd(row, col, layout, widget);
                 if (it->getDeviceTypeId() == INDUSTRIAL_DUAL_ANALOG_IN_DEVICE_IDENTIFIER)
                     widget->setValueLabels("Ch 0 (mV)", "Ch 1 (mV)");
@@ -320,7 +333,7 @@ void MainWindow::on_action_Run_triggered()
             }
 
             case TEMPERATURE_IR_DEVICE_IDENTIFIER: {
-                DualSensor *widget = new DualSensor(this, deviceTypeName, uidStr);
+                DualSensor *widget = new DualSensor(this, deviceTitle, uidStr);
                 calculatePositionAndAdd(row, col, layout, widget);
                 widget->setValueLabels(it->getLabel(), "Ambient °C * 100");
                 it->setVisualizationClient(*widget);
@@ -329,7 +342,7 @@ void MainWindow::on_action_Run_triggered()
             }
 
             case ROTARY_POTI_DEVICE_IDENTIFIER: {
-                Sensor *widget = new Sensor(this, deviceTypeName, uidStr, true);
+                Sensor *widget = new Sensor(this, deviceTitle, true);
                 calculatePositionAndAdd(row, col, layout, widget);
                 it->setVisualizationClient(*widget);
                 vzw = widget;
@@ -338,7 +351,7 @@ void MainWindow::on_action_Run_triggered()
 
             case INDUSTRIAL_DIGITAL_IN_4_DEVICE_IDENTIFIER:
             case INDUSTRIAL_DIGITAL_IN_4_V2_DEVICE_IDENTIFIER: {
-                DigitalIn *widget = new DigitalIn(this, deviceTypeName, uidStr);
+                DigitalIn *widget = new DigitalIn(this, deviceTitle);
                 calculatePositionAndAdd(row, col, layout, widget);
                 it->setVisualizationClient(*widget);
                 vzw = widget;
@@ -346,7 +359,7 @@ void MainWindow::on_action_Run_triggered()
             }
 
             case DUAL_BUTTON_DEVICE_IDENTIFIER: {
-                DualButton *widget = new DualButton(this, deviceTypeName, uidStr);
+                DualButton *widget = new DualButton(this, deviceTitle);
                 calculatePositionAndAdd(row, col, layout, widget);
                 it->setVisualizationClient(*widget);
                 vzw = widget;
@@ -354,7 +367,7 @@ void MainWindow::on_action_Run_triggered()
             }
 
             case RGB_LED_BUTTON_DEVICE_IDENTIFIER: {
-                LedButton *widget = new LedButton(this, deviceTypeName, uidStr);
+                LedButton *widget = new LedButton(this, deviceTitle);
                 calculatePositionAndAdd(row, col, layout, widget);
                 it->setVisualizationClient(*widget);
                 vzw = widget;
@@ -365,7 +378,7 @@ void MainWindow::on_action_Run_triggered()
             case TILT_DEVICE_IDENTIFIER:
             case MOTION_DETECTOR_DEVICE_IDENTIFIER:
             case MOTION_DETECTOR_V2_DEVICE_IDENTIFIER: {
-                MotionSensor *widget = new MotionSensor(this, deviceTypeName, uidStr);
+                MotionSensor *widget = new MotionSensor(this, deviceTitle);
                 calculatePositionAndAdd(row, col, layout, widget);
                 if (it->getDeviceTypeId() == HALL_EFFECT_DEVICE_IDENTIFIER)
                     widget->showUseCounter();

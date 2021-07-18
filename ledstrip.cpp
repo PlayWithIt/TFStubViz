@@ -10,15 +10,15 @@
 using namespace stubserver;
 
 
-LedStrip::LedStrip(QWidget *parent, const char *uid)
+LedStrip::LedStrip(QWidget *parent, const char *title)
     : QWidget(parent)
     , ui(new Ui::LedStrip)
     , numLeds(0)
     , ledState(NULL)
 {
     ui->setupUi(this);
-    ui->groupBox->setTitle(QString("LedStrip - ") + QString(uid));
-    connectTooltipTo(ui->groupBox, uid);
+    ui->groupBox->setTitle(title);
+    connectTooltipTo(ui->groupBox);
 
     connect(this, &LedStrip::valueChanged, this, &LedStrip::updateUi);
 }

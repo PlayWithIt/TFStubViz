@@ -42,12 +42,12 @@ public:
     /**
      * Init UI, if 'small' is true, then 64x48 pixels are used, otherwise 128x64.
      */
-    explicit OLED(QWidget *parent, const char *uid, bool small);
+    explicit OLED(QWidget *parent, const char *title, bool small);
 
     /**
      * Used to create the LCD only !
      */
-    explicit OLED(QWidget *parent, const char *uid);
+    explicit OLED(QWidget *parent, const char *title);
     ~OLED();
 
     void notify(const stubserver::VisibleDeviceState &hint) override;

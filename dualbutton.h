@@ -22,7 +22,7 @@ class DualButton : public SensorInterface
     Ui::DualButton *ui;
 
 public:
-    explicit DualButton(QWidget *parent, const char *type, const char *uid);
+    explicit DualButton(QWidget *parent, const char *title);
     ~DualButton();
 
     /**

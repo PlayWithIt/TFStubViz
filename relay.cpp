@@ -23,7 +23,7 @@ static QPixmap loadPixmap(const char *p)
 }
 
 
-Relay::Relay(QWidget *parent, const char *type, const char *uid)
+Relay::Relay(QWidget *parent, const char *title, bool dual)
     : QWidget(parent)
     , ui(new Ui::Relay)
     , numRelays(0)
@@ -31,11 +31,10 @@ Relay::Relay(QWidget *parent, const char *type, const char *uid)
     ui->setupUi(this);
     ui->scrollArea->setWidgetResizable(true);
 
-    if (type != NULL && uid != NULL)
-        ui->groupBox->setTitle(QString(type) + QString(" - ") + QString(uid));
-    connectTooltipTo(ui->groupBox, uid);
+    ui->groupBox->setTitle(title);
+    connectTooltipTo(ui->groupBox);
 
-    if (type != NULL && strstr(type, "DUAL_")) {
+    if (dual) {
         imgOn  = new QPixmap(loadPixmap("dual_on.png"));
         imgOff = new QPixmap(loadPixmap("dual_off.png"));
     }

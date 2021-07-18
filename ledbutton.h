@@ -21,7 +21,7 @@ class LedButton : public SensorInterface
     unsigned red, green, blue;
 
 public:
-    explicit LedButton(QWidget *parent, const char *type, const char *uid);
+    explicit LedButton(QWidget *parent, const char *title);
     ~LedButton() override;
 
     /**

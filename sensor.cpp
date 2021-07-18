@@ -9,7 +9,7 @@
 using namespace stubserver;
 
 
-Sensor::Sensor(QWidget *parent, const char *type, const char *uid, bool rotary)
+Sensor::Sensor(QWidget *parent, const char *title, bool rotary)
     : SensorInterface(parent)
     , uiS(rotary ? nullptr : new Ui::Sensor())
     , uiP(rotary ? new Ui::Potentiometer() : nullptr)
@@ -27,7 +27,7 @@ Sensor::Sensor(QWidget *parent, const char *type, const char *uid, bool rotary)
     else {
         uiS->setupUi(this);
         setCheckBox(uiS->check);
-        connectTooltipTo(uiS->groupBox, uid);
+        connectTooltipTo(uiS->groupBox);
 
         grp      = uiS->groupBox;
         sensor   = uiS->sensor;
@@ -37,11 +37,7 @@ Sensor::Sensor(QWidget *parent, const char *type, const char *uid, bool rotary)
         statusLED= uiS->statusLED;
     }
 
-    // make it possible to show only type or uid in dualsensor
-    if (uid && *uid)
-        grp->setTitle(QString(type) + QString(" - ") + QString(uid));
-    else
-        grp->setTitle(QString(type));
+    grp->setTitle(title);
 
     connect(this,     &Sensor::valueChanged,             this, &Sensor::updateUi);
     connect(this,     &Sensor::ledChanged,               this, &Sensor::updateLed);

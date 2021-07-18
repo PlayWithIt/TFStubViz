@@ -5,7 +5,7 @@
 #include "touchpad.h"
 
 
-TouchPad::TouchPad(QWidget *parent, const char *uid)
+TouchPad::TouchPad(QWidget *parent, const char *title)
     : ButtonWidget(parent)
 {
     setupUi(this);
@@ -48,7 +48,6 @@ TouchPad::TouchPad(QWidget *parent, const char *uid)
     connect(button11, &QPushButton::pressed,  this, [this]{ buttonDown(11); });
     connect(button11, &QPushButton::released, this, [this]{ buttonUp(11); });
 
-    if (uid != NULL)
-        groupBox->setTitle(QString("MULTI_TOUCH - ") + QString(uid));
-    connectTooltipTo(groupBox, uid);
+    groupBox->setTitle(title);
+    connectTooltipTo(groupBox);
 }

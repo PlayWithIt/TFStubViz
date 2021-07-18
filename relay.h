@@ -18,7 +18,7 @@ class Relay : public QWidget, public VisualizationWidget
     Q_OBJECT
 
 public:
-    Relay(QWidget *parent, const char *type, const char *uid);
+    Relay(QWidget *parent, const char *title, bool dual);
     ~Relay();
 
     //----- VisualizationClient

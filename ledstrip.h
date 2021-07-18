@@ -27,7 +27,7 @@ class LedStrip : public QWidget, public VisualizationWidget
     uint8_t b[stubserver::LedStripState::MAX_LEDS];
 
 public:
-    LedStrip(QWidget *parent, const char *uid);
+    LedStrip(QWidget *parent, const char *title);
     ~LedStrip();
 
     //----- VisualizationClient

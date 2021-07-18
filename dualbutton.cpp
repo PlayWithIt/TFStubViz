@@ -4,7 +4,7 @@
 #include "dualbutton.h"
 #include "ui_dualbutton.h"
 
-DualButton::DualButton(QWidget *parent, const char *type, const char *uid)
+DualButton::DualButton(QWidget *parent, const char *title)
     : SensorInterface(parent)
     , led_l(NULL)
     , led_r(NULL)
@@ -13,8 +13,8 @@ DualButton::DualButton(QWidget *parent, const char *type, const char *uid)
     ui->setupUi(this);
     setCheckBox(ui->check);
 
-    ui->groupBox->setTitle(QString(type) + QString(" - ") + QString(uid));
-    connectTooltipTo(ui->groupBox, uid);
+    ui->groupBox->setTitle(title);
+    connectTooltipTo(ui->groupBox);
 
     led_l = new StatusLed(ui->statusLED_l);
     led_r = new StatusLed(ui->statusLED_r);

@@ -27,7 +27,7 @@ LCD::LCD(QWidget *parent, const char *uid)
 
     if (uid)
         groupBox->setTitle(QString("LCD 20x4 - ") + QString(uid));
-    connectTooltipTo(groupBox, uid);
+    connectTooltipTo(groupBox);
 
     // Connect the 4 buttons of the LCD.
     connect(buttons[0], &QPushButton::pressed,  this, [this]{ renderArea->buttonDown(0); });

@@ -24,7 +24,7 @@ class DigitalIn : public SensorInterface
     Ui::DigitalIn *ui;
 
 public:
-    explicit DigitalIn(QWidget *parent, const char *type, const char *uid);
+    explicit DigitalIn(QWidget *parent, const char *title);
     ~DigitalIn();
 
     /**

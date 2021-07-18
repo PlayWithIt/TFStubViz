@@ -1,7 +1,7 @@
 #include "motionsensor.h"
 #include "ui_motionsensor.h"
 
-MotionSensor::MotionSensor(QWidget *parent, const char *type, const char *uid)
+MotionSensor::MotionSensor(QWidget *parent, const char *title)
     : SensorInterface(parent)
     , ui(new Ui::MotionSensor)
     , useCounter(false)
@@ -10,8 +10,8 @@ MotionSensor::MotionSensor(QWidget *parent, const char *type, const char *uid)
     ui->check->setDisabled(true);
     setCheckBox(ui->check);
 
-    ui->groupBox->setTitle(QString(type) + QString(" - ") + QString(uid));
-    connectTooltipTo(ui->groupBox, uid);
+    ui->groupBox->setTitle(title);
+    connectTooltipTo(ui->groupBox);
 
     statusLED = ui->statusLED;
 
