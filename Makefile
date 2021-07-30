@@ -2,8 +2,18 @@
 # Linux Makefile for building: TFStubViz
 #############################################################################
 
+ifeq "$(CONFIG)" "Debug"
+  CONFIG=debug
+endif
+ifeq "$(CONFIG)" "Release"
+  CONFIG=release
+endif
+ifeq "$(CONFIG)" ""
+  CONFIG=debug
+endif
+
 all:	build
-	cd build && qmake -spec linux-g++ CONFIG+=debug -o Makefile ../TFStubViz.pro
+	cd build && qmake -spec linux-g++ CONFIG+=$(CONFIG) -o Makefile ../TFStubViz.pro
 	cd build && make -j4
 
 build:

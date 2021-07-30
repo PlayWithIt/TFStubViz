@@ -2,18 +2,19 @@
 #include "multisensor.h"
 
 
-MultiSensor::MultiSensor(QWidget *parent, const char *type, const char *uid, unsigned sensorCount)
+MultiSensor::MultiSensor(QWidget *parent, const char *title, unsigned sensorCount)
     : QWidget(parent)
 {
     QHBoxLayout *layout = new QHBoxLayout;
+    bool isAirQuality = sensorCount == 4;
 
     layout->setSpacing(0);
     layout->setContentsMargins(QMargins(0,0,0,0));
 
-    sensors.push_back(new Sensor(this, type, NULL));
-    sensors.push_back(new Sensor(this, uid, NULL));
+    sensors.push_back(new Sensor(this, title, false));
+    sensors.push_back(new Sensor(this, isAirQuality ? "Temp" : "", false));
     for (unsigned s = 2; s < sensorCount; ++s)
-        sensors.push_back( new Sensor(this, "", NULL) );
+        sensors.push_back( new Sensor(this, isAirQuality ? ( s == 2 ? "Humidity" : "Pressure" ): "", false) );
 
     unsigned w = 3;
     for (auto it : sensors) {
@@ -22,7 +23,7 @@ MultiSensor::MultiSensor(QWidget *parent, const char *type, const char *uid, uns
     }
 
     // Workaround to set min / max for AIR_QUALITY
-    if (sensorCount == 4)
+    if (isAirQuality)
     {
         sensors[AIR_QUALITY_IAQ]->setMinMax(0, 500);
         sensors[AIR_QUALITY_TEMP]->setMinMax(-5000, 5000);
@@ -61,11 +62,20 @@ void MultiSensor::setStackParameter(char position, const std::string &parent)
  */
 void MultiSensor::notify(const stubserver::VisibleDeviceState &state)
 {
-    if (state.getChangeCode() == stubserver::VisibleDeviceState::CONNECTED || state.getChangeCode() == stubserver::VisibleDeviceState::DISCONNECT)
+    if (state.getChangeCode() == stubserver::VisibleDeviceState::DISCONNECT)
+        return;
+    if (state.getChangeCode() == stubserver::VisibleDeviceState::CONNECTED)
     {
         // qDebug("Notify for all sensors with state %d", state.getChangeCode());
-        for (auto it : sensors)
-            it->notify(state);
+        if (sensors.size() == 4) {
+            // AirQuality: init all 4 sensors with initial value + min/max
+            const stubserver::SensorState& sensorState = dynamic_cast<const stubserver::SensorState&>(state);
+
+            emit sensors[AIR_QUALITY_IAQ]->valueChanged(sensorState.getSensorValue1());
+            emit sensors[AIR_QUALITY_TEMP]->valueChanged(sensorState.getSensorValue2());
+            emit sensors[AIR_QUALITY_HUMIDITY]->valueChanged(sensorState.getSensorValue3());
+            emit sensors[AIR_QUALITY_PRESSURE]->valueChanged(sensorState.getSensorValue4());
+        }
     }
     else {
         unsigned sensorNo = state.getInternalSensorNo();

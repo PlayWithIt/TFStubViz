@@ -17,7 +17,7 @@ class MultiSensor : public QWidget, public VisualizationWidget
     std::vector<Sensor*> sensors;
 
 public:
-    MultiSensor(QWidget *parent, const char *type, const char *uid, unsigned sensorCount);
+    MultiSensor(QWidget *parent, const char *type, unsigned sensorCount);
     ~MultiSensor();
 
     void setValueLabel(unsigned sensor, const std::string &label);

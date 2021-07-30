@@ -2,10 +2,10 @@
 #include "dualsensor.h"
 
 
-DualSensor::DualSensor(QWidget *parent, const char *type, const char *uid)
+DualSensor::DualSensor(QWidget *parent, const char *title, const char *uid)
     : QWidget(parent)
-    , sensor0( new Sensor(this, type, NULL) )
-    , sensor1( new Sensor(this, uid, NULL) )
+    , sensor0( new Sensor(this, title, false) )
+    , sensor1( new Sensor(this, uid, false) )
 {
     QHBoxLayout *layout = new QHBoxLayout;
 

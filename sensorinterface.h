@@ -31,11 +31,33 @@ protected:
 public:
     explicit SensorInterface(QWidget *p, QWidget *_statusLED = nullptr);
 
-    //----- VisualizationClient
+    //----- VisualizationClient ---------------------------
+
+    /**
+     * notify() is called after the VisualizationClient (this object) is connected to an
+     * instance of a 'SimulatedDevice'. The SimulatedDevice then sends the current value
+     * and min / max initially.
+     *
+     * After the initial connect, this method is called when the value is not controlled
+     * via UI but via ValueProvider and the UI just needs to display the current value.
+     */
     virtual void notify(const stubserver::VisibleDeviceState &state) override;
+
+    /**
+     * This medthod is called periodically by the instance of a 'SimulatedDevice' in order
+     * to check if the value comes from the UI or not. If this method returns true, this
+     * UI object defines the sensor value.
+     */
     virtual bool useAsInputSource(unsigned sensorNo) const override;
+
+    /**
+     * Return the current state (value) which is controlled via UI.
+     */
     virtual int64_t getInputState(unsigned sensorNo) const override;
 
+    /**
+     * Set min / max directly, not via notify().
+     */
     void setMinMax(int _min, int _max);
 
 signals:

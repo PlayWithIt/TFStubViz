@@ -1,4 +1,5 @@
 
+#include <QDesktopWidget>
 #include <QFileDialog>
 #include <QScrollBar>
 
@@ -27,6 +28,14 @@
 #include <utils/utils.h>
 #include <utils/Log.h>
 
+/**
+ * Number of columns in the GridLayout:
+ * 24 cols with 50 pixels => 1200 pixels
+ * 30 cols with 50 pixels => 1500 pixels
+ */
+static int COLS_PER_ROW = 24;
+static int COLUMN_WIDTH = 50;
+
 
 MainWindow::MainWindow(const char *configFile, int _port)
     : QMainWindow(nullptr)
@@ -42,6 +51,13 @@ MainWindow::MainWindow(const char *configFile, int _port)
     ui->centralWidget->setWidgetResizable(true);
 
     setWindowTitle("TF Stub-Visualization");
+
+    QDesktopWidget dw;
+    if (dw.width() > 1600) {
+        // set width 1400 instead of 120
+        this->setGeometry(5, 5, 1420, 1000);
+        COLS_PER_ROW = 30;
+    }
 
     if (configFileName.length() > 0)
         loadConfig();
@@ -120,12 +136,6 @@ void MainWindow::on_action_Load_stub_config_triggered()
 }
 
 /**
- * Number of columns in the GridLayout: 25 cols with 50 pixels => 1200 pixels
- */
-static const int COLS_PER_ROW = 24;
-static const int COLUMN_WIDTH = 50;
-
-/**
  * Calculate where to put the next widget in the GridLayout
  */
 static void calculatePositionAndAdd(int &row, int &col, QGridLayout *layout, QWidget *w)
@@ -175,15 +185,11 @@ void MainWindow::on_action_Run_triggered()
 
     int row = 0;
     int col = 0;
-    std::list<const stubserver::SimulatedDevice*> devices = stubserver::getDevices();
+    std::list<const stubserver::SimulatedDevice*> devices = stubserver::getUiDevices();
 
     // first add the wide items
     for (auto it : devices)
     {
-        // exclude from UI ...
-        if (it->doHideInUI())
-            continue;
-
         const char *deviceTitle = it->getTitle().c_str();
         const char *uidStr      = it->getUidStr().c_str();
         VisualizationWidget *vzw = nullptr;
@@ -234,7 +240,7 @@ void MainWindow::on_action_Run_triggered()
             }
 
             case AIR_QUALITY_DEVICE_IDENTIFIER: {
-                MultiSensor *w = new MultiSensor(this, deviceTitle, uidStr, 4);
+                MultiSensor *w = new MultiSensor(this, deviceTitle, 4);
                 calculatePositionAndAdd(row, col, layout, w);
                 it->setVisualizationClient(*w);
                 vzw = w;
@@ -248,10 +254,6 @@ void MainWindow::on_action_Run_triggered()
     // add small items
     for (auto it : devices)
     {
-        // exclude from UI ...
-        if (it->doHideInUI())
-            continue;
-
         const char *deviceTitle = it->getTitle().c_str();
         const char *uidStr      = it->getUidStr().c_str();
         VisualizationWidget *vzw   = nullptr;
