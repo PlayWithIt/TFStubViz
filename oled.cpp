@@ -53,6 +53,7 @@ OLED::OLED(QWidget *parent, const char *title)
     ui->setupUi(this);
     ui->groupBox->setTitle(title);
     clear(false);
+    connect(this, &OLED::triggerUpdate, this, &OLED::doUpdate);
 }
 
 OLED::~OLED() {
@@ -65,6 +66,14 @@ void OLED::clear(bool inverted)
     Pal.setColor(QPalette::Background, inverted ? whitePen.color() : bluePen.color());
     ui->screen->setAutoFillBackground(true);
     ui->screen->setPalette(Pal);
+}
+
+/**
+ * Call the widget UI update.
+ */
+void OLED::doUpdate()
+{
+    update();
 }
 
 
@@ -177,6 +186,6 @@ void OLED::notify(const stubserver::VisibleDeviceState &hint)
     else if (hint.getChangeCode() == stubserver::VisibleDeviceState::CONNECTED)
         displayState = dynamic_cast<const stubserver::DisplayState*>(&hint);
     else {
-        update();
+        emit triggerUpdate();
     }
 }

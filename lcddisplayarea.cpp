@@ -39,6 +39,7 @@ LCDDisplayArea::LCDDisplayArea(QWidget *parent)
     , myMutex()
 {
     showBacklight();
+    connect(this, &LCDDisplayArea::triggerUpdate, this, &LCDDisplayArea::doUpdate);
 }
 
 /**
@@ -46,6 +47,11 @@ LCDDisplayArea::LCDDisplayArea(QWidget *parent)
  */
 LCDDisplayArea::~LCDDisplayArea()
 {
+}
+
+void LCDDisplayArea::doUpdate()
+{
+    update();
 }
 
 void LCDDisplayArea::showBacklight()
@@ -155,7 +161,8 @@ void LCDDisplayArea::notify(const VisibleDeviceState &hint)
                 lcdFont.set(line + 8, new CharMask(lcdState->getCustomerChar(line)));
             }
         }
-        else
-            update();
+        else {
+            emit triggerUpdate();
+        }
     }
 }

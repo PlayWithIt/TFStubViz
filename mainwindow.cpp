@@ -14,6 +14,7 @@
 #include "ledstrip.h"
 #include "motionsensor.h"
 #include "multisensor.h"
+#include "outdoorsensors.h"
 #include "oled.h"
 #include "relay.h"
 #include "sensor.h"
@@ -54,8 +55,8 @@ MainWindow::MainWindow(const char *configFile, int _port)
 
     QDesktopWidget dw;
     if (dw.width() > 1600) {
-        // set width 1400 instead of 120
-        this->setGeometry(5, 5, 1420, 1000);
+        // set width 1420 instead of 1210
+        this->setGeometry(20, 40, 1420, 1000);
         COLS_PER_ROW = 30;
     }
 
@@ -187,13 +188,14 @@ void MainWindow::on_action_Run_triggered()
     int col = 0;
     std::list<const stubserver::SimulatedDevice*> devices = stubserver::getUiDevices();
 
-    // first add the wide items
+    // add the items in the order they appear: strongly recommended to use UI_UIDS in the config
     for (auto it : devices)
     {
         const char *deviceTitle = it->getTitle().c_str();
         const char *uidStr      = it->getUidStr().c_str();
         VisualizationWidget *vzw = nullptr;
 
+        // large items
         switch (it->getDeviceTypeId()) {
         case MULTI_TOUCH_V2_DEVICE_IDENTIFIER:
         case MULTI_TOUCH_DEVICE_IDENTIFIER: {
@@ -246,19 +248,8 @@ void MainWindow::on_action_Run_triggered()
                 vzw = w;
                 break;
             }
-        }
-        if (vzw)
-            vzw->setStackParameter(it->getPosition(), it->getConnectedUidStr());
-    }
 
-    // add small items
-    for (auto it : devices)
-    {
-        const char *deviceTitle = it->getTitle().c_str();
-        const char *uidStr      = it->getUidStr().c_str();
-        VisualizationWidget *vzw   = nullptr;
-
-        switch (it->getDeviceTypeId()) {
+            //-------------------------- add small items
 
             case DUAL_RELAY_DEVICE_IDENTIFIER:
             case REMOTE_SWITCH_DEVICE_IDENTIFIER:
@@ -314,21 +305,25 @@ void MainWindow::on_action_Run_triggered()
             case MASTER_DEVICE_IDENTIFIER:
             case DC_DEVICE_IDENTIFIER:
             case SERVO_DEVICE_IDENTIFIER:
-            case OUTDOOR_WEATHER_DEVICE_IDENTIFIER:
             case INDUSTRIAL_DUAL_ANALOG_IN_DEVICE_IDENTIFIER:
             case VOLTAGE_CURRENT_DEVICE_IDENTIFIER: {
                 DualSensor *widget = new DualSensor(this, deviceTitle, uidStr);
                 calculatePositionAndAdd(row, col, layout, widget);
                 if (it->getDeviceTypeId() == INDUSTRIAL_DUAL_ANALOG_IN_DEVICE_IDENTIFIER)
                     widget->setValueLabels("Ch 0 (mV)", "Ch 1 (mV)");
-                else if (it->getDeviceTypeId() == OUTDOOR_WEATHER_DEVICE_IDENTIFIER) {
-                    widget->setValueLabels("Ch 0 (°C)", "Ch 1 (°C)");
-                    widget->setLedOn(true);
-                }
                 else {
                     widget->setValueLabels(it->getLabel(), "Current mA");
                     widget->setLedOn(true);
                 }
+                it->setVisualizationClient(*widget);
+                vzw = widget;
+                break;
+            }
+
+            case OUTDOOR_WEATHER_DEVICE_IDENTIFIER: {
+                OutdoorSensors *widget = new OutdoorSensors(this, uidStr);
+                calculatePositionAndAdd(row, col, layout, widget);
+                widget->setLedOn(true);
                 it->setVisualizationClient(*widget);
                 vzw = widget;
                 break;
@@ -391,18 +386,8 @@ void MainWindow::on_action_Run_triggered()
                 break;
             }
 
-            case AIR_QUALITY_DEVICE_IDENTIFIER:
-            case LCD_20X4_DEVICE_IDENTIFIER:
-            case LCD_128X64_DEVICE_IDENTIFIER:
-            case LED_STRIP_DEVICE_IDENTIFIER:
-            case MULTI_TOUCH_V2_DEVICE_IDENTIFIER:
-            case MULTI_TOUCH_DEVICE_IDENTIFIER:
-            case OLED_128X64_DEVICE_IDENTIFIER:
-            case OLED_64X48_DEVICE_IDENTIFIER:
-                break;
-
             default:
-                utils::Log() << "UI: ignored device of type " << it->getDeviceTypeId() << '(' << it->getDeviceTypeName() << ')';
+                utils::Log() << "UI: ignored device of type " << it->getDeviceTypeName() << " (uid=" << it->getUidStr() << ')';
         }
         if (vzw)
             vzw->setStackParameter(it->getPosition(), it->getConnectedUidStr());

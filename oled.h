@@ -57,6 +57,13 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
 
+
+signals:
+    void triggerUpdate();
+
+public slots:
+    void doUpdate();
+
 };
 
 #endif // OLED_H

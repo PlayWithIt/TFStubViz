@@ -91,10 +91,13 @@ void MultiSensor::notify(const stubserver::VisibleDeviceState &state)
  * or from the visualisation, choose the source by this function. The default
  * implementation returns false: use ValueProvider.
  */
-bool MultiSensor::useAsInputSource(unsigned sensorNo) const {
-    if (sensorNo < sensors.size())
-        return sensors[sensorNo]->useAsInputSource(sensorNo);
-    return false;
+bool MultiSensor::useAsInputSource(unsigned sensorNo) const
+{
+    bool res = false;
+    if (sensorNo < sensors.size()) {
+        res = sensors[sensorNo]->useAsInputSource(sensorNo);
+    }
+    return res;
 }
 
 /**

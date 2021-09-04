@@ -12,57 +12,64 @@ TARGET = TFStubViz
 TEMPLATE = app
 QMAKE_CXXFLAGS += -std=c++11 -Wall -Wignored-qualifiers -Wparentheses -Woverloaded-virtual -Wsign-compare -Werror
 
-SOURCES += main.cpp\
-    digitalin.cpp \
-    mainwindow.cpp \
-    touchpad.cpp \
-    lcd.cpp \
-    serverthread.cpp \
-    lcddisplayarea.cpp \
-    sensor.cpp \
-    relay.cpp \
+SOURCES += main.cpp \
     buttonwidget.cpp \
-    motionsensor.cpp \
-    sensorinterface.cpp \
-    dualsensor.cpp \
-    visualizationwidget.cpp \
-    ledstrip.cpp \
+    digitalin.cpp \
     dualbutton.cpp \
-    oled.cpp \
-    statusled.cpp \
+    dualsensor.cpp \
+    lcd.cpp \
+    lcddisplayarea.cpp \
+    ledbutton.cpp \
+    ledstrip.cpp \
+    mainwindow.cpp \
+    motionsensor.cpp \
     multisensor.cpp \
-    ledbutton.cpp
+    oled.cpp \
+    outdoorsensors.cpp \
+    relay.cpp \
+    sensor.cpp \
+    sensorinterface.cpp \
+    serverthread.cpp \
+    singleoutdoorsensor.cpp \
+    statusled.cpp \
+    touchpad.cpp \
+    visualizationwidget.cpp
 
-HEADERS  += mainwindow.h \
-    digitalin.h \
-    touchpad.h \
-    lcd.h \
-    serverthread.h \
-    lcddisplayarea.h \
-    sensor.h \
-    relay.h \
+HEADERS += mainwindow.h \
     buttonwidget.h \
-    motionsensor.h \
-    sensorinterface.h \
-    dualsensor.h \
-    visualizationwidget.h \
-    ledstrip.h \
+    digitalin.h \
     dualbutton.h \
-    oled.h \
-    statusled.h \
+    dualsensor.h \
+    lcd.h \
+    lcddisplayarea.h \
+    ledbutton.h \
+    ledstrip.h \
+    motionsensor.h \
     multisensor.h \
-    ledbutton.h
+    oled.h \
+    outdoorsensors.h \
+    relay.h \
+    sensor.h \
+    sensorinterface.h \
+    serverthread.h \
+    singleoutdoorsensor.h \
+    statusled.h \
+    touchpad.h \
+    visualizationwidget.h
 
-FORMS    += mainwindow.ui touchpad.ui lcd.ui \
+FORMS += mainwindow.ui \
     digitalin.ui \
-    sensor.ui \
-    relay.ui \
-    motionsensor.ui \
-    poti.ui \
-    ledstrip.ui \
     dualbutton.ui \
+    lcd.ui \
+    ledbutton.ui \
+    ledstrip.ui \
+    motionsensor.ui \
     oled.ui \
-    ledbutton.ui
+    outdoorsensors.ui \
+    poti.ui \
+    relay.ui \
+    sensor.ui \
+    touchpad.ui
 
 unix:CONFIG(release, debug|release): LIBS += -L$$PWD/../TFStubserver/lib/Release -lstubserver -lutils -lasound
 else:unix:CONFIG(debug, debug|release): LIBS += -L$$PWD/../TFStubserver/lib/Debug -lstubserver -lutils -lasound

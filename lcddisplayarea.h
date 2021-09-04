@@ -51,8 +51,10 @@ protected:
     virtual void paintEvent(QPaintEvent *event) override;
 
 signals:
+    void triggerUpdate();
 
 public slots:
+    void doUpdate();
 };
 
 #endif // LCDDISPLAYAREA_H
