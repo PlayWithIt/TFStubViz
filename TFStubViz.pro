@@ -10,7 +10,10 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = TFStubViz
 TEMPLATE = app
-QMAKE_CXXFLAGS += -std=c++11 -Wall -Wignored-qualifiers -Wparentheses -Woverloaded-virtual -Wsign-compare -Werror
+CONFIG += c++17
+QMAKE_CC = gcc-11
+QMAKE_CXX = g++-11
+QMAKE_CXXFLAGS += -Wall -Wignored-qualifiers -Wparentheses -Woverloaded-virtual -Wsign-compare -Werror -std=c++17
 
 SOURCES += main.cpp \
     buttonwidget.cpp \

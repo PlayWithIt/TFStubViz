@@ -21,7 +21,10 @@ class LedButton : public SensorInterface
     unsigned red, green, blue;
 
 public:
-    explicit LedButton(QWidget *parent, const char *title);
+    /**
+     * If readOnly is true, then this is more the pure LED without button functionality
+     */
+    LedButton(QWidget *parent, bool readOnly, const char *title);
     ~LedButton() override;
 
     /**

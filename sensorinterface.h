@@ -21,6 +21,7 @@ protected:
     int      currentValue;
     unsigned counter;
     int      min, max;
+    int      zeroPoint;
     bool     minMaxSet;
     bool     manualControl;
 

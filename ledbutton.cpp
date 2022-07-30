@@ -4,7 +4,10 @@
 #include "ledbutton.h"
 #include "ui_ledbutton.h"
 
-LedButton::LedButton(QWidget *parent, const char *title)
+/**
+ * If readOnly is true, then this is more the pure LED without button functionality
+ */
+LedButton::LedButton(QWidget *parent, bool readOnly, const char *title)
     : SensorInterface(parent)
     , led_l(nullptr)
     , ui(new Ui::LedButton)
@@ -19,12 +22,19 @@ LedButton::LedButton(QWidget *parent, const char *title)
     connectTooltipTo(ui->groupBox);
 
     led_l = new StatusLed(ui->statusLED);
-
-    // Connect the button and the checkbox
     connect(this,       &LedButton::valueChanged,  this, &LedButton::updateUi);
-    connect(ui->button, &QPushButton::pressed,     this, [this]{ buttonDown(); });
-    connect(ui->button, &QPushButton::released,    this, [this]{ buttonUp(); });
-    connect(checkBox,   &QCheckBox::stateChanged,  this, &SensorInterface::checkBoxClicked);
+
+    if (readOnly) {
+        // disabled unsued feature: not a realy button, but just LED display
+        ui->button->setDisabled(true);
+        checkBox->setDisabled(true);
+    }
+    else {
+        // Connect the button and the checkbox
+        connect(ui->button, &QPushButton::pressed,     this, [this]{ buttonDown(); });
+        connect(ui->button, &QPushButton::released,    this, [this]{ buttonUp(); });
+        connect(checkBox,   &QCheckBox::stateChanged,  this, &SensorInterface::checkBoxClicked);
+    }
 }
 
 LedButton::~LedButton()

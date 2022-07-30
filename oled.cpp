@@ -34,6 +34,7 @@ OLED::OLED(QWidget *parent, const char *title, bool small)
     }
 
     clear(false);
+    connect(this, &OLED::triggerUpdate, this, &OLED::doUpdate);
 }
 
 /**
@@ -63,7 +64,7 @@ OLED::~OLED() {
 void OLED::clear(bool inverted)
 {
     QPalette Pal(palette());
-    Pal.setColor(QPalette::Background, inverted ? whitePen.color() : bluePen.color());
+    Pal.setColor(QPalette::Window, inverted ? whitePen.color() : bluePen.color());
     ui->screen->setAutoFillBackground(true);
     ui->screen->setPalette(Pal);
 }

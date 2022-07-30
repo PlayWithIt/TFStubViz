@@ -10,6 +10,7 @@ SensorInterface::SensorInterface(QWidget *p, QWidget *_statusLED)
   , counter(0)
   , min(0)
   , max(100)
+  , zeroPoint(0)
   , minMaxSet(false)
   , manualControl(false)
 {
@@ -68,9 +69,11 @@ void SensorInterface::notify(const stubserver::VisibleDeviceState &sensor)
             this->min = state.getMin();
             this->max = state.getMax();
         }
-        // qDebug("SensorInterface::notify - value change %d", newValue);
 
+        zeroPoint = state.getZeroPoint();
         counter = state.getCounter();
+
+        //printf("SensorInterface::notify - value change %d %d\n", newValue, zeroPoint);
         emit valueChanged(newValue);
     }
     catch (const std::exception &e) {

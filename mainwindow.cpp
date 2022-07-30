@@ -243,6 +243,10 @@ void MainWindow::on_action_Run_triggered()
 
             case AIR_QUALITY_DEVICE_IDENTIFIER: {
                 MultiSensor *w = new MultiSensor(this, deviceTitle, 4);
+                w->setValueLabel(AIR_QUALITY_IAQ, "IAQ");
+                w->setValueLabel(AIR_QUALITY_TEMP, "°C * 100");
+                w->setValueLabel(AIR_QUALITY_HUMIDITY, "%rH * 100");
+                w->setValueLabel(AIR_QUALITY_PRESSURE, "mBar * 100");
                 calculatePositionAndAdd(row, col, layout, w);
                 it->setVisualizationClient(*w);
                 vzw = w;
@@ -275,7 +279,6 @@ void MainWindow::on_action_Run_triggered()
             case DUST_DETECTOR_DEVICE_IDENTIFIER:
             case HALL_EFFECT_V2_DEVICE_IDENTIFIER:
             case HUMIDITY_DEVICE_IDENTIFIER:
-            case HUMIDITY_V2_DEVICE_IDENTIFIER:
             case LINEAR_POTI_DEVICE_IDENTIFIER:
             case LINE_DEVICE_IDENTIFIER:
             case LOAD_CELL_DEVICE_IDENTIFIER:
@@ -306,10 +309,12 @@ void MainWindow::on_action_Run_triggered()
             case DC_DEVICE_IDENTIFIER:
             case SERVO_DEVICE_IDENTIFIER:
             case INDUSTRIAL_DUAL_ANALOG_IN_DEVICE_IDENTIFIER:
+            case INDUSTRIAL_DUAL_ANALOG_IN_V2_DEVICE_IDENTIFIER:
             case VOLTAGE_CURRENT_DEVICE_IDENTIFIER: {
                 DualSensor *widget = new DualSensor(this, deviceTitle, uidStr);
                 calculatePositionAndAdd(row, col, layout, widget);
-                if (it->getDeviceTypeId() == INDUSTRIAL_DUAL_ANALOG_IN_DEVICE_IDENTIFIER)
+                if (it->getDeviceTypeId() == INDUSTRIAL_DUAL_ANALOG_IN_DEVICE_IDENTIFIER ||
+                        it->getDeviceTypeId() == INDUSTRIAL_DUAL_ANALOG_IN_V2_DEVICE_IDENTIFIER)
                     widget->setValueLabels("Ch 0 (mV)", "Ch 1 (mV)");
                 else {
                     widget->setValueLabels(it->getLabel(), "Current mA");
@@ -330,9 +335,27 @@ void MainWindow::on_action_Run_triggered()
             }
 
             case TEMPERATURE_IR_DEVICE_IDENTIFIER: {
-                DualSensor *widget = new DualSensor(this, deviceTitle, uidStr);
+                DualSensor *widget = new DualSensor(this, deviceTitle, "Object / Ambient");
                 calculatePositionAndAdd(row, col, layout, widget);
                 widget->setValueLabels(it->getLabel(), "Ambient °C * 100");
+                it->setVisualizationClient(*widget);
+                vzw = widget;
+                break;
+            }
+
+            case HUMIDITY_V2_DEVICE_IDENTIFIER: {
+                DualSensor *widget = new DualSensor(this, deviceTitle, "Humidity / Temperature");
+                calculatePositionAndAdd(row, col, layout, widget);
+                widget->setValueLabels(it->getLabel(), "°C * 100");
+                it->setVisualizationClient(*widget);
+                vzw = widget;
+                break;
+            }
+
+            case BAROMETER_V2_DEVICE_IDENTIFIER: {
+                DualSensor *widget = new DualSensor(this, deviceTitle, "AirPressure / Temperature");
+                calculatePositionAndAdd(row, col, layout, widget);
+                widget->setValueLabels(it->getLabel(), "°C * 100");
                 it->setVisualizationClient(*widget);
                 vzw = widget;
                 break;
@@ -363,8 +386,9 @@ void MainWindow::on_action_Run_triggered()
                 break;
             }
 
+            case RGB_LED_V2_DEVICE_IDENTIFIER:
             case RGB_LED_BUTTON_DEVICE_IDENTIFIER: {
-                LedButton *widget = new LedButton(this, deviceTitle);
+                LedButton *widget = new LedButton(this, it->getDeviceTypeId() == RGB_LED_V2_DEVICE_IDENTIFIER, deviceTitle);
                 calculatePositionAndAdd(row, col, layout, widget);
                 it->setVisualizationClient(*widget);
                 vzw = widget;

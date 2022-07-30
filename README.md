@@ -8,17 +8,17 @@ In order to build this project you'll need the TFStubserver project too.
 
 While TFStubserver is purely command line based, this user interface includes
 the command line emulator and offers basic support to display current sensors
-and has the possibility to manually override sensor values vis sliders and
+and has the possibility to manually override sensor values via sliders and
 shows the content of a 'simulated screen'.
 
-The UI miuight look like this with a sample configuration for sensors and an LCD:
+The UI might look like this with a sample configuration for sensors and an LCD:
 ![main window](./mainwindow.png)
 
 Requirements:
 -------------
 * Linux
-* g++ 4.6.3 or higher (as on Raspberry PI, OpenSuse 13.1)
-* clang++ 3.3 (llvm) or higher should work too
+* g++ 8 or higher (C++ std 17)
+* clang++ 10 (llvm) or higher should work too
 * Qt 5.4
 
 Compile:

@@ -57,7 +57,7 @@ void LCDDisplayArea::doUpdate()
 void LCDDisplayArea::showBacklight()
 {
     QPalette Pal(palette());
-    Pal.setColor(QPalette::Background, backlight ? Qt::blue : Qt::darkBlue);
+    Pal.setColor(QPalette::Window, backlight ? Qt::blue : Qt::darkBlue);
     setAutoFillBackground(true);
     setPalette(Pal);
 }

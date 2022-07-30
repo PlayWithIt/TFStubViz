@@ -19,6 +19,12 @@ class VisualizationWidget : public stubserver::VisualizationClient
 protected:
     VisualizationWidget();
 
+    /**
+     * The widget which is registered here is used to create a tooltip for
+     * when "setStackParameter()" is called. This cannot be used at construction
+     * time as the whole widget hierarchy might is created after this class
+     * gets constructed.
+     */
     void connectTooltipTo(QWidget *w) {
         widget = w;
     }

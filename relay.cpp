@@ -8,8 +8,6 @@
 #include "relay.h"
 #include "ui_relay.h"
 
-using namespace stubserver;
-
 /**
  * Load a pixmap from ressources.
  */
@@ -28,6 +26,8 @@ Relay::Relay(QWidget *parent, const char *title, bool dual)
     , ui(new Ui::Relay)
     , numRelays(0)
 {
+    memset(statusLED, 0, sizeof(statusLED));
+
     ui->setupUi(this);
     ui->scrollArea->setWidgetResizable(true);
 
@@ -51,6 +51,9 @@ Relay::~Relay()
     delete ui;
     delete imgOn;
     delete imgOff;
+
+    for (int i = 0; i < numRelays; ++i)
+        delete statusLED[i];
 }
 
 
@@ -58,7 +61,7 @@ Relay::~Relay()
  * @brief Sensor::updateUi signal receiver method when a value changes
  * @param newValue
  */
-void Relay::updateUi(const RelayState *rs)
+void Relay::updateUi(const stubserver::RelayState *rs)
 {
     // e.g. the RemoteSwitch has dynamic switches
     int count = rs->getNumSwitches();
@@ -97,6 +100,16 @@ void Relay::updateUi(const RelayState *rs)
             lbl->setText(rs->getLabel(i).c_str());
             lbl->setMinimumHeight(img->height() + 10);
             layout->addWidget(lbl, i, 1);
+
+            if (rs->getLedConfig(i) != stubserver::StatusLedConfig::LED_HIDDEN) {
+                QWidget *led = new QWidget();
+                led->setMinimumWidth(12);
+                led->setMinimumHeight(12);
+                led->setMaximumWidth(12);
+                led->setMaximumHeight(12);
+                statusLED[i] = new StatusLed(led);
+                layout->addWidget(led, i, 2);
+            }
         }
 
         if (numRelays == 0)
@@ -113,6 +126,8 @@ void Relay::updateUi(const RelayState *rs)
         QPixmap *img = rs->isOn(i) ? imgOn : imgOff;
         QLabel *lbl = imgWidgets[i];
         lbl->setPixmap(*img);
+        if (statusLED[i])
+            statusLED[i]->setLedOn(rs->isLedOn(i));
     }
 }
 
@@ -120,13 +135,13 @@ void Relay::updateUi(const RelayState *rs)
  * @brief Sensor::notify
  * @param sensor
  */
-void Relay::notify(const VisibleDeviceState &state)
+void Relay::notify(const stubserver::VisibleDeviceState &state)
 {
     if (state.isDisconnected())
         return;
 
     try {
-        const RelayState& rs = dynamic_cast<const RelayState&>(state);
+        const stubserver::RelayState& rs = dynamic_cast<const stubserver::RelayState&>(state);
         emit valueChanged(&rs);
     }
     catch (const std::exception &e) {

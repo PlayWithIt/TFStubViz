@@ -2,6 +2,16 @@
 # Linux Makefile for building: TFStubViz
 #############################################################################
 
+ifeq "$(CC)" ""
+    CC:=$(shell test -x /usr/bin/g++-11 && echo g++-11)
+endif
+ifeq "$(CC)" ""
+    CC:=$(shell test -x /usr/bin/g++-10 && echo g++-10)
+endif
+ifeq "$(CC)" ""
+    CC:=g++
+endif
+
 ifeq "$(CONFIG)" "Debug"
   CONFIG=debug
 endif

@@ -37,8 +37,10 @@ public:
     void setValueLabel(const std::string &label) const;
 
 public slots:
-    // new sensor value
+    // new sensor value from extern
     void updateUi(int);
+    // new sensor value manually (other zero point handling)
+    void sliderMoved(int);
 
     // new led value
     void updateLed(bool);

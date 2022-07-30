@@ -3,6 +3,7 @@
 
 #include <QLabel>
 
+#include "statusled.h"
 #include "visualizationwidget.h"
 
 
@@ -32,9 +33,10 @@ public slots:
 
 private:
     Ui::Relay *ui;
-    QPixmap *imgOn;
-    QPixmap *imgOff;
-    QLabel* imgWidgets[16];
+    QPixmap   *imgOn;
+    QPixmap   *imgOff;
+    QLabel    *imgWidgets[16];
+    StatusLed *statusLED[16];
 
     int numRelays;
 };

@@ -17,6 +17,7 @@ Sensor::Sensor(QWidget *parent, const char *title, bool rotary)
     QGroupBox *grp;
     if (rotary) {
         uiP->setupUi(this);
+        setCheckBox(uiP->check);
 
         grp      = uiP->groupBox;
         sensor   = uiP->sensor;
@@ -42,7 +43,7 @@ Sensor::Sensor(QWidget *parent, const char *title, bool rotary)
     connect(this,     &Sensor::valueChanged,             this, &Sensor::updateUi);
     connect(this,     &Sensor::ledChanged,               this, &Sensor::updateLed);
     connect(sensor,   &QAbstractSlider::sliderPressed,   this, &SensorInterface::activateManualControl);
-    connect(sensor,   &QAbstractSlider::sliderMoved,     this, &Sensor::updateUi);
+    connect(sensor,   &QAbstractSlider::sliderMoved,     this, &Sensor::sliderMoved);
     connect(sensor,   &QAbstractSlider::actionTriggered, this, &Sensor::actionTriggered);
     connect(checkBox, &QCheckBox::stateChanged,          this, &SensorInterface::checkBoxClicked);
 }
@@ -95,14 +96,23 @@ void Sensor::actionTriggered(int action)
         return;
     }
 
-    if (newValue > max)
+    if (newValue + zeroPoint > max)
         newValue = max;
-    if (newValue < min)
+    if (newValue + zeroPoint < min)
         newValue = min;
 
+    // printf("actionTriggered %d %d, current %d\n", newValue, zeroPoint, currentValue);
+
     currentValue = newValue;
-    sensor->setValue(newValue);
+    sensor->setValue(newValue + zeroPoint);
     label->setText(QString::number(newValue));
+}
+
+// new sensor value manually (other zero point handling)
+void Sensor::sliderMoved(int v)
+{
+    // printf("sliderMoved %d %d, current %d\n", v, zeroPoint, currentValue);
+    updateUi(v - zeroPoint);
 }
 
 /**
@@ -111,12 +121,12 @@ void Sensor::actionTriggered(int action)
  */
 void Sensor::updateUi(int newValue)
 {
+    // printf("updateUi %d %d, current %d\n", newValue, zeroPoint, currentValue);
     currentValue = newValue;
     if (!minMaxSet)
     {
         labelMin->setText(QString::number(min));
         labelMax->setText(QString::number(max));
-        label->setText(QString::number(newValue));
         sensor->setRange(min, max);
         sensor->setPageStep((max - min) / 80);
         minMaxSet = true;
@@ -126,7 +136,7 @@ void Sensor::updateUi(int newValue)
 
     // this method was called due to manual change?
     if (!manualControl)
-        sensor->setValue(newValue);
+        sensor->setValue(newValue + zeroPoint);
 }
 
 /**

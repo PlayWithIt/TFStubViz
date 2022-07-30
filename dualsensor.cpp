@@ -46,7 +46,7 @@ void DualSensor::setStackParameter(char position, const std::string &parent)
  */
 void DualSensor::notify(const stubserver::VisibleDeviceState &sensor)
 {
-    // qDebug("Notify for sensor %d", sensor.getInternalSensorNo());
+    // qDebug("Notify for sensor %d - value %d", sensor.getInternalSensorNo(), dynamic_cast<const stubserver::SensorState&>(sensor).getSensorValue());
     if (sensor.getInternalSensorNo() == 0)
         sensor0->notify(sensor);
     else
