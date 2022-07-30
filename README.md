@@ -17,7 +17,7 @@ The UI might look like this with a sample configuration for sensors and an LCD:
 Requirements:
 -------------
 * Linux
-* g++ 8 or higher (C++ std 17)
+* g++ 10 or higher (C++ std 17)
 * clang++ 10 (llvm) or higher should work too
 * Qt 5.4
 
