@@ -16,6 +16,7 @@
 #include "multisensor.h"
 #include "outdoorsensors.h"
 #include "oled.h"
+#include "piezospeaker.h"
 #include "relay.h"
 #include "sensor.h"
 #include "touchpad.h"
@@ -308,17 +309,24 @@ void MainWindow::on_action_Run_triggered()
             case MASTER_DEVICE_IDENTIFIER:
             case DC_DEVICE_IDENTIFIER:
             case SERVO_DEVICE_IDENTIFIER:
-            case INDUSTRIAL_DUAL_ANALOG_IN_DEVICE_IDENTIFIER:
-            case INDUSTRIAL_DUAL_ANALOG_IN_V2_DEVICE_IDENTIFIER:
             case VOLTAGE_CURRENT_DEVICE_IDENTIFIER: {
                 DualSensor *widget = new DualSensor(this, deviceTitle, uidStr);
                 calculatePositionAndAdd(row, col, layout, widget);
-                if (it->getDeviceTypeId() == INDUSTRIAL_DUAL_ANALOG_IN_DEVICE_IDENTIFIER ||
-                        it->getDeviceTypeId() == INDUSTRIAL_DUAL_ANALOG_IN_V2_DEVICE_IDENTIFIER)
-                    widget->setValueLabels("Ch 0 (mV)", "Ch 1 (mV)");
-                else {
-                    widget->setValueLabels(it->getLabel(), "Current mA");
-                    widget->setLedOn(true);
+                widget->setValueLabels(it->getLabel(), "Current mA");
+                widget->setLed1On(true);
+                it->setVisualizationClient(*widget);
+                vzw = widget;
+                break;
+            }
+
+            case INDUSTRIAL_DUAL_ANALOG_IN_DEVICE_IDENTIFIER:
+            case INDUSTRIAL_DUAL_ANALOG_IN_V2_DEVICE_IDENTIFIER: {
+                DualSensor *widget = new DualSensor(this, deviceTitle, uidStr);
+                calculatePositionAndAdd(row, col, layout, widget);
+                widget->setValueLabels("Ch 0 (mV)", "Ch 1 (mV)");
+                if (it->getDeviceTypeId() == INDUSTRIAL_DUAL_ANALOG_IN_V2_DEVICE_IDENTIFIER) {
+                    widget->setLed1On(true);
+                    widget->setLed2On(true);
                 }
                 it->setVisualizationClient(*widget);
                 vzw = widget;
@@ -369,6 +377,15 @@ void MainWindow::on_action_Run_triggered()
                 break;
             }
 
+            case PIEZO_SPEAKER_V2_DEVICE_IDENTIFIER:
+            case PIEZO_SPEAKER_DEVICE_IDENTIFIER: {
+                PiezoSpeaker *widget = new PiezoSpeaker(this, deviceTitle, it->getDeviceTypeId() != PIEZO_SPEAKER_DEVICE_IDENTIFIER);
+                calculatePositionAndAdd(row, col, layout, widget);
+                it->setVisualizationClient(*widget);
+                vzw = widget;
+                break;
+            }
+
             case INDUSTRIAL_DIGITAL_IN_4_DEVICE_IDENTIFIER:
             case INDUSTRIAL_DIGITAL_IN_4_V2_DEVICE_IDENTIFIER: {
                 DigitalIn *widget = new DigitalIn(this, deviceTitle);
@@ -401,6 +418,9 @@ void MainWindow::on_action_Run_triggered()
             case MOTION_DETECTOR_V2_DEVICE_IDENTIFIER: {
                 MotionSensor *widget = new MotionSensor(this, deviceTitle);
                 calculatePositionAndAdd(row, col, layout, widget);
+
+                if (it->getDeviceTypeId() == MOTION_DETECTOR_V2_DEVICE_IDENTIFIER)
+                    widget->showAllLeds();
                 if (it->getDeviceTypeId() == HALL_EFFECT_DEVICE_IDENTIFIER)
                     widget->showUseCounter();
                 else

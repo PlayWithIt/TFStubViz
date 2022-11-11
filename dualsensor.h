@@ -16,11 +16,19 @@ public:
     void setValueLabels(const std::string &left, const std::string &right);
 
     /**
-     * @brief setLedOn turn the status LED on or OFF (for Bricks).
+     * @brief setLedOn turn the first status LED on or OFF.
      * @param on if true, LED is on
      */
-    void setLedOn(bool on) {
+    void setLed1On(bool on) {
         sensor0->setLedOn(on);
+    }
+
+    /**
+     * @brief setLed2On turn the second status LED on or OFF.
+     * @param on if true, LED is on
+     */
+    void setLed2On(bool on) {
+        sensor1->setLedOn(on);
     }
 
     //----- VisualizationWidget

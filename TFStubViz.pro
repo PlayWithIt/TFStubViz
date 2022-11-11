@@ -4,15 +4,25 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+#---- for Qt 5 only
+QT       += core gui widgets
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+QMAKE_CC = gcc
+QMAKE_CXX = g++
+
+exists(/usr/bin/g++-10) {
+    QMAKE_CXX = g++-10
+    QMAKE_CC  = gcc-10
+}
+exists(/usr/bin/g++-11) {
+    QMAKE_CXX = g++-11
+    QMAKE_CC  = gcc-11
+}
 
 TARGET = TFStubViz
 TEMPLATE = app
 CONFIG += c++17
-QMAKE_CC = gcc-11
-QMAKE_CXX = g++-11
 QMAKE_CXXFLAGS += -Wall -Wignored-qualifiers -Wparentheses -Woverloaded-virtual -Wsign-compare -Werror -std=c++17
 
 SOURCES += main.cpp \
@@ -29,6 +39,7 @@ SOURCES += main.cpp \
     multisensor.cpp \
     oled.cpp \
     outdoorsensors.cpp \
+    piezospeaker.cpp \
     relay.cpp \
     sensor.cpp \
     sensorinterface.cpp \
@@ -51,6 +62,7 @@ HEADERS += mainwindow.h \
     multisensor.h \
     oled.h \
     outdoorsensors.h \
+    piezospeaker.h \
     relay.h \
     sensor.h \
     sensorinterface.h \
@@ -69,6 +81,7 @@ FORMS += mainwindow.ui \
     motionsensor.ui \
     oled.ui \
     outdoorsensors.ui \
+    piezo.ui \
     poti.ui \
     relay.ui \
     sensor.ui \

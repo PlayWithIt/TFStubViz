@@ -5,6 +5,7 @@ MotionSensor::MotionSensor(QWidget *parent, const char *title)
     : SensorInterface(parent)
     , ui(new Ui::MotionSensor)
     , useCounter(false)
+    , showLeds(false)
 {
     ui->setupUi(this);
     ui->check->setDisabled(true);
@@ -46,6 +47,7 @@ void MotionSensor::updateUi(int newValue)
     if (!minMaxSet)
         minMaxSet = true;
 
+    // use counter is for hall effect sensor
     if (useCounter)
         ui->label->setText(QString::number(counter));
 
@@ -73,5 +75,16 @@ void MotionSensor::updateUi(int newValue)
  */
 void MotionSensor::updateLed(bool ledValue)
 {
+    char styleheet[100];
+
     setLedOn(ledValue);
+
+    if (showLeds) {
+        sprintf(styleheet, "background-color:#0000%02x;", led1);
+        ui->ledL->setStyleSheet(styleheet);
+        sprintf(styleheet, "background-color:#0000%02x;", led2);
+        ui->ledR->setStyleSheet(styleheet);
+        sprintf(styleheet, "background-color:#0000%02x;", led3);
+        ui->ledB->setStyleSheet(styleheet);
+    }
 }

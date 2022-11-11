@@ -59,6 +59,10 @@ void SensorInterface::notify(const stubserver::VisibleDeviceState &sensor)
         if (state.getChangeCode() == stubserver::SensorState::LED_CHANGE)
         {
             // just change the LED status, nothing else
+            led1 = state.getLed1();
+            led2 = state.getLed2();
+            led3 = state.getLed3();
+            led4 = state.getLed4();
             emit ledChanged(state.isStatusLedOn());
             return;
         }

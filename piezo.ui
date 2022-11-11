@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MotionSensor</class>
- <widget class="QWidget" name="MotionSensor">
+ <class>PiezoSpeaker</class>
+ <widget class="QWidget" name="PiezoSpeaker">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -37,46 +37,31 @@
    <property name="title">
     <string>GroupBox</string>
    </property>
-   <widget class="QCheckBox" name="check">
+   <widget class="QLabel" name="valueTypeLabel">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>250</y>
-      <width>91</width>
-      <height>23</height>
+      <x>10</x>
+      <y>190</y>
+      <width>161</width>
+      <height>51</height>
      </rect>
     </property>
-    <property name="text">
-     <string>manual</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="button">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>95</y>
-      <width>100</width>
-      <height>100</height>
-     </rect>
+    <property name="font">
+     <font>
+      <family>Noto Sans Blk</family>
+      <pointsize>20</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="text">
-     <string>PushButton</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>5</x>
-      <y>200</y>
-      <width>171</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string notr="true"/>
+     <string notr="true">Hz</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QWidget" name="statusLED" native="true">
@@ -107,34 +92,17 @@
      </size>
     </property>
    </widget>
-   <widget class="QWidget" name="ledB" native="true">
+   <widget class="QLCDNumber" name="lcdNumber">
     <property name="geometry">
      <rect>
-      <x>75</x>
-      <y>200</y>
-      <width>30</width>
-      <height>30</height>
+      <x>0</x>
+      <y>90</y>
+      <width>181</width>
+      <height>101</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QWidget" name="ledL" native="true">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>60</y>
-      <width>30</width>
-      <height>30</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QWidget" name="ledR" native="true">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>60</y>
-      <width>30</width>
-      <height>30</height>
-     </rect>
+    <property name="digitCount">
+     <number>4</number>
     </property>
    </widget>
   </widget>

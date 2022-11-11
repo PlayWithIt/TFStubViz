@@ -24,6 +24,7 @@ protected:
     int      zeroPoint;
     bool     minMaxSet;
     bool     manualControl;
+    uint8_t  led1, led2, led3, led4;    // multiple purpose e.g. motion detector leds
 
     void setCheckBox(QCheckBox *check) {
         checkBox = check;
