@@ -1,6 +1,7 @@
 
-#include <QDesktopWidget>
 #include <QFileDialog>
+#include <QGridLayout>
+#include <QGuiApplication>
 #include <QScrollBar>
 
 #include <QDebug>
@@ -54,8 +55,8 @@ MainWindow::MainWindow(const char *configFile, int _port)
 
     setWindowTitle("TF Stub-Visualization");
 
-    QDesktopWidget dw;
-    if (dw.width() > 1600) {
+    QScreen *scr = QGuiApplication::primaryScreen();
+    if (scr && scr->size().width() > 1600) {
         // set width 1420 instead of 1210
         this->setGeometry(20, 40, 1420, 1000);
         COLS_PER_ROW = 30;
@@ -93,6 +94,7 @@ void MainWindow::loadConfig()
 
 void MainWindow::serverStopped()
 {
+    serverThread->doStop();
     statusBar()->showMessage(tr("Server stopped"));
 
     ui->action_Stop->setEnabled(false);

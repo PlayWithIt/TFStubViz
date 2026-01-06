@@ -4,6 +4,12 @@
 #include "sensor.h"
 #include "visualizationwidget.h"
 
+/**
+ * @brief The DualSensor class
+ *
+ * Base class for a widget that has two sensor channels which can
+ * be controlled speparately.
+ */
 class DualSensor : public QWidget, public VisualizationWidget
 {
     Sensor *sensor0;
@@ -13,6 +19,11 @@ public:
     DualSensor(QWidget *parent, const char *type, const char *uid);
     ~DualSensor();
 
+    /**
+     * Change labels for the left and right sensor
+     * @param left left label
+     * @param right right label
+     */
     void setValueLabels(const std::string &left, const std::string &right);
 
     /**

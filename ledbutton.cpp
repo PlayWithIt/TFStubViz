@@ -49,9 +49,6 @@ LedButton::~LedButton()
  */
 void LedButton::notify(const stubserver::VisibleDeviceState &sensor)
 {
-    if (sensor.isDisconnected())
-        return;
-
     try {
         const stubserver::DualButtonState& state = dynamic_cast<const stubserver::DualButtonState&>(sensor);
 

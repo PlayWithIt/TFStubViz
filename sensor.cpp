@@ -121,7 +121,7 @@ void Sensor::sliderMoved(int v)
  */
 void Sensor::updateUi(int newValue)
 {
-    // printf("updateUi %d %d, current %d\n", newValue, zeroPoint, currentValue);
+    // printf("Sensor::updateUi %d %d, current %d, minMaxSet = %d -> min/max %d %d\n", newValue, zeroPoint, currentValue, minMaxSet, min, max);
     currentValue = newValue;
     if (!minMaxSet)
     {

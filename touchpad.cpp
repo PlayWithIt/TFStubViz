@@ -1,6 +1,5 @@
 
 #include <QDebug>
-#include <iomanip>
 
 #include "touchpad.h"
 

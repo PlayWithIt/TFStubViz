@@ -2,8 +2,6 @@
 #include <QGridLayout>
 #include <QDebug>
 
-#include <string>
-
 #include "ledstrip.h"
 #include "ui_ledstrip.h"
 
@@ -115,11 +113,6 @@ void LedStrip::updateUi(const LedStripState *strip, unsigned to)
  */
 void LedStrip::notify(const stubserver::VisibleDeviceState &sensor)
 {
-    if (sensor.isDisconnected()) {
-        ledState = NULL;
-        return;
-    }
-
     try {
         const stubserver::LedStripState& state = dynamic_cast<const stubserver::LedStripState&>(sensor);
         if (state.getFrameData(r, g, b) > 0)

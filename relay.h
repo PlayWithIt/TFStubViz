@@ -13,7 +13,9 @@ class Relay;
 
 class QPixmap;
 
-
+/**
+ * Vizualization for relay devices.
+ */
 class Relay : public QWidget, public VisualizationWidget
 {
     Q_OBJECT

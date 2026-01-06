@@ -30,7 +30,7 @@ void SensorInterface::activateManualControl()
 }
 
 /**
- * @brief Sensor::manualSliderChange
+ * enables or disables the manual control.
  */
 void SensorInterface::checkBoxClicked(int v)
 {
@@ -50,9 +50,6 @@ void SensorInterface::setMinMax(int _min, int _max)
  */
 void SensorInterface::notify(const stubserver::VisibleDeviceState &sensor)
 {
-    if (sensor.isDisconnected())
-        return;
-
     try {
         const stubserver::SensorState& state = dynamic_cast<const stubserver::SensorState&>(sensor);
 

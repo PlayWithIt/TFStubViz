@@ -137,9 +137,6 @@ void Relay::updateUi(const stubserver::RelayState *rs)
  */
 void Relay::notify(const stubserver::VisibleDeviceState &state)
 {
-    if (state.isDisconnected())
-        return;
-
     try {
         const stubserver::RelayState& rs = dynamic_cast<const stubserver::RelayState&>(state);
         emit valueChanged(&rs);

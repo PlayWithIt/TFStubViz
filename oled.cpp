@@ -182,9 +182,7 @@ void OLED::paintEvent(QPaintEvent * /* event */)
  */
 void OLED::notify(const stubserver::VisibleDeviceState &hint)
 {
-    if (hint.getChangeCode() == stubserver::VisibleDeviceState::DISCONNECT)
-        displayState = NULL;
-    else if (hint.getChangeCode() == stubserver::VisibleDeviceState::CONNECTED)
+    if (hint.getChangeCode() == stubserver::VisibleDeviceState::CONNECTED)
         displayState = dynamic_cast<const stubserver::DisplayState*>(&hint);
     else {
         emit triggerUpdate();

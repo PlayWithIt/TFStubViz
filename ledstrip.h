@@ -12,7 +12,11 @@ class LedStrip;
 
 class QPixmap;
 
-
+/**
+ * LedStrip UI simulation:
+ * shows as many colored dots as needed and is able to update the UI
+ * as necessary.
+ */
 class LedStrip : public QWidget, public VisualizationWidget
 {
     Q_OBJECT

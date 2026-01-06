@@ -47,9 +47,6 @@ DigitalIn::~DigitalIn()
  */
 void DigitalIn::notify(const stubserver::VisibleDeviceState &sensor)
 {
-    if (sensor.isDisconnected())
-        return;
-
     try {
         const stubserver::RelayState& state = dynamic_cast<const stubserver::RelayState&>(sensor);
 

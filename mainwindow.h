@@ -10,6 +10,9 @@ namespace Ui {
     class MainWindow;
 }
 
+/**
+ * Main Window of the stub server UI.
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

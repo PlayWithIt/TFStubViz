@@ -54,9 +54,6 @@ OutdoorSensors::~OutdoorSensors()
  */
 void OutdoorSensors::notify(const VisibleDeviceState &sensor)
 {
-    if (sensor.isDisconnected())
-        return;
-
     try {
         const OutdoorWeatherState& state = dynamic_cast<const OutdoorWeatherState&>(sensor);
 

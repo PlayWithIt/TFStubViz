@@ -148,21 +148,17 @@ void LCDDisplayArea::notify(const VisibleDeviceState &hint)
 {
     //qDebug() << "LCDDisplayArea::notify " << hint.getChangeCode();
 
-    if (hint.getChangeCode() == VisibleDeviceState::DISCONNECT)
-        lcdState = NULL;
-    else {
-        lcdState = dynamic_cast<const LcdState*>(&hint);
-        if (lcdState && hint.getChangeCode() == LcdState::CUSTOM_CHAR)
+    lcdState = dynamic_cast<const LcdState*>(&hint);
+    if (lcdState && hint.getChangeCode() == LcdState::CUSTOM_CHAR)
+    {
+        unsigned line = lcdState->getChangedLine();
+        if (line < 8)
         {
-            unsigned line = lcdState->getChangedLine();
-            if (line < 8)
-            {
-                // custom chars are defined by 0..7 and index by char 8..15
-                lcdFont.set(line + 8, new CharMask(lcdState->getCustomerChar(line)));
-            }
+            // custom chars are defined by 0..7 and index by char 8..15
+            lcdFont.set(line + 8, new CharMask(lcdState->getCustomerChar(line)));
         }
-        else {
-            emit triggerUpdate();
-        }
+    }
+    else {
+        emit triggerUpdate();
     }
 }

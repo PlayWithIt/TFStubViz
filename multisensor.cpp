@@ -62,8 +62,6 @@ void MultiSensor::setStackParameter(char position, const std::string &parent)
  */
 void MultiSensor::notify(const stubserver::VisibleDeviceState &state)
 {
-    if (state.getChangeCode() == stubserver::VisibleDeviceState::DISCONNECT)
-        return;
     if (state.getChangeCode() == stubserver::VisibleDeviceState::CONNECTED)
     {
         // qDebug("Notify for all sensors with state %d", state.getChangeCode());

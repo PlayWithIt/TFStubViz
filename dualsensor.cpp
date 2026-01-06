@@ -1,4 +1,5 @@
 #include <QHBoxLayout>
+
 #include "dualsensor.h"
 
 

@@ -11,19 +11,19 @@ QT       += core gui widgets
 QMAKE_CC = gcc
 QMAKE_CXX = g++
 
-exists(/usr/bin/g++-10) {
-    QMAKE_CXX = g++-10
-    QMAKE_CC  = gcc-10
+exists(/usr/bin/g++-14) {
+    QMAKE_CXX = g++-14
+    QMAKE_CC  = gcc-14
 }
-exists(/usr/bin/g++-11) {
-    QMAKE_CXX = g++-11
-    QMAKE_CC  = gcc-11
+exists(/usr/bin/g++-15) {
+    QMAKE_CXX = g++-15
+    QMAKE_CC  = gcc-15
 }
 
 TARGET = TFStubViz
 TEMPLATE = app
-CONFIG += c++17
-QMAKE_CXXFLAGS += -Wall -Wignored-qualifiers -Wparentheses -Woverloaded-virtual -Wsign-compare -Werror -std=c++17
+CONFIG += c++23
+QMAKE_CXXFLAGS += -Wall -Wignored-qualifiers -Wparentheses -Woverloaded-virtual -Wsign-compare -Werror -std=c++23 -fPIC
 
 SOURCES += main.cpp \
     buttonwidget.cpp \
