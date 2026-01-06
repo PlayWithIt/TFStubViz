@@ -2,6 +2,7 @@
 #include <QFileDialog>
 #include <QGridLayout>
 #include <QGuiApplication>
+#include <QScreen>
 #include <QScrollBar>
 
 #include <QDebug>

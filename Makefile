@@ -3,10 +3,10 @@
 #############################################################################
 
 ifeq "$(CC)" ""
-    CC:=$(shell test -x /usr/bin/g++-11 && echo g++-11)
+    CC:=$(shell test -x /usr/bin/g++-15 && echo g++-15)
 endif
 ifeq "$(CC)" ""
-    CC:=$(shell test -x /usr/bin/g++-10 && echo g++-10)
+    CC:=$(shell test -x /usr/bin/g++-14 && echo g++-14)
 endif
 ifeq "$(CC)" ""
     CC:=g++
