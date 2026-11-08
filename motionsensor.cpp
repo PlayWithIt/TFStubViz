@@ -21,7 +21,7 @@ MotionSensor::MotionSensor(QWidget *parent, const char *title)
     connect(this,       &SensorInterface::ledChanged,this, &MotionSensor::updateLed);
     connect(ui->button, &QPushButton::pressed,       this, &SensorInterface::activateManualControl);
     connect(ui->button, &QPushButton::released,      this, &MotionSensor::toggleState);
-    connect(ui->check,  &QCheckBox::stateChanged,    this, &SensorInterface::checkBoxClicked);
+    connect(ui->check,  &QCheckBox::checkStateChanged, this, &SensorInterface::checkBoxClicked);
 }
 
 MotionSensor::~MotionSensor()

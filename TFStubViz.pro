@@ -7,22 +7,20 @@
 #---- for Qt 5 only
 QT       += core gui widgets
 
-
 QMAKE_CC = gcc
 QMAKE_CXX = g++
 
 exists(/usr/bin/g++-14) {
     QMAKE_CXX = g++-14
-    QMAKE_CC  = gcc-14
+    QMAKE_LINK= g++-14
 }
 exists(/usr/bin/g++-15) {
     QMAKE_CXX = g++-15
-    QMAKE_CC  = gcc-15
+    QMAKE_LINK= g++-15
 }
 
 TARGET = TFStubViz
 TEMPLATE = app
-CONFIG += c++23
 QMAKE_CXXFLAGS += -Wall -Wignored-qualifiers -Wparentheses -Woverloaded-virtual -Wsign-compare -Werror -std=c++23 -fPIC
 
 SOURCES += main.cpp \

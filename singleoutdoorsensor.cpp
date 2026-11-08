@@ -42,7 +42,7 @@ SingleOutdoorSensor::SingleOutdoorSensor(QWidget *parent, QCheckBox *checkBox, Q
     connect(sliderHum,   &QAbstractSlider::actionTriggered, this, &SingleOutdoorSensor::humActionTriggered);
     connect(sliderTemp,  &QAbstractSlider::sliderMoved,     this, &SingleOutdoorSensor::tempSliderMoved);
     connect(sliderHum,   &QAbstractSlider::sliderMoved,     this, &SingleOutdoorSensor::humSliderMoved);
-    connect(checkManual, &QCheckBox::stateChanged,          this, &SingleOutdoorSensor::toggleManualControl);
+    connect(checkManual, &QCheckBox::checkStateChanged,     this, &SingleOutdoorSensor::toggleManualControl);
 
     //TODO: click on 'manual' to enable auto mode.
 }
@@ -66,9 +66,9 @@ void SingleOutdoorSensor::activateManualControl()
  * SingleOutdoorSensor::toggleManualControl change state of manual control
  * for the sliders.
  */
-void SingleOutdoorSensor::toggleManualControl(int v)
+void SingleOutdoorSensor::toggleManualControl(Qt::CheckState v)
 {
-    manualControl = v != 0;
+    manualControl = v == Qt::CheckState::Checked;
 }
 
 

@@ -33,7 +33,7 @@ LedButton::LedButton(QWidget *parent, bool readOnly, const char *title)
         // Connect the button and the checkbox
         connect(ui->button, &QPushButton::pressed,     this, [this]{ buttonDown(); });
         connect(ui->button, &QPushButton::released,    this, [this]{ buttonUp(); });
-        connect(checkBox,   &QCheckBox::stateChanged,  this, &SensorInterface::checkBoxClicked);
+        connect(checkBox,   &QCheckBox::checkStateChanged,  this, &SensorInterface::checkBoxClicked);
     }
 }
 

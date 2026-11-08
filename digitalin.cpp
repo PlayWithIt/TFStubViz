@@ -29,7 +29,7 @@ DigitalIn::DigitalIn(QWidget *parent, const char *title)
     connect(ui->button1, &QPushButton::clicked,    this, [this]{ buttonClick(2); });
     connect(ui->button2, &QPushButton::clicked,    this, [this]{ buttonClick(4); });
     connect(ui->button3, &QPushButton::clicked,    this, [this]{ buttonClick(8); });
-    connect(checkBox,    &QCheckBox::stateChanged, this, &SensorInterface::checkBoxClicked);
+    connect(checkBox,    &QCheckBox::checkStateChanged, this, &SensorInterface::checkBoxClicked);
 }
 
 DigitalIn::~DigitalIn()

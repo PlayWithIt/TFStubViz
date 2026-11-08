@@ -25,7 +25,7 @@ DualButton::DualButton(QWidget *parent, const char *title)
     connect(ui->button_l, &QPushButton::released,    this, [this]{ buttonUp(0); });
     connect(ui->button_r, &QPushButton::pressed,     this, [this]{ buttonDown(1); });
     connect(ui->button_r, &QPushButton::released,    this, [this]{ buttonUp(1); });
-    connect(checkBox,     &QCheckBox::stateChanged,  this, &SensorInterface::checkBoxClicked);
+    connect(checkBox,     &QCheckBox::checkStateChanged,  this, &SensorInterface::checkBoxClicked);
 }
 
 DualButton::~DualButton()

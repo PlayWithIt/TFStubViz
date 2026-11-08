@@ -17,15 +17,15 @@ The UI might look like this with a sample configuration for sensors and an LCD:
 Requirements:
 -------------
 * Linux
-* g++ 13 or higher (C++ std 23)
+* g++ 14 or higher (C++ std 23)
 * clang++ 19 (llvm) or higher should work too
-* Qt 5.4 / 6
+* Qt 6
 
 Compile:
 --------
 * be sure that ``TFStubserver`` is installed too in the same folder as ``TFStubViz``
 * be sure that ``qmake`` is in your PATH and points to the correct Qt version
-  e.g. use ``export PATH=~/Qt/5.4/gcc_64/bin:$PATH``
+  e.g. use ``export PATH=~/Qt/6.2/gcc_64/bin:$PATH``
 * run ``make`` (or something like ``make -j4``) in the base directory for a debug-build
 
 Run:

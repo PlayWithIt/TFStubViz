@@ -67,7 +67,7 @@ signals:
     void ledChanged(bool);
 
 public slots:
-    void checkBoxClicked(int);
+    void checkBoxClicked(Qt::CheckState);
     void activateManualControl();
 
 };

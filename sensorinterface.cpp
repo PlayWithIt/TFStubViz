@@ -32,9 +32,9 @@ void SensorInterface::activateManualControl()
 /**
  * enables or disables the manual control.
  */
-void SensorInterface::checkBoxClicked(int v)
+void SensorInterface::checkBoxClicked(Qt::CheckState v)
 {
-    manualControl = v != 0;
+    manualControl = v == Qt::CheckState::Checked;
     if (checkBox)
         checkBox->setEnabled(manualControl);
 }

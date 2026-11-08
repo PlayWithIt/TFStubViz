@@ -79,7 +79,7 @@ public slots:
     void activateManualControl();
 
     // change state of manual control for the sliders
-    void toggleManualControl(int v);
+    void toggleManualControl(Qt::CheckState);
 };
 
 #endif // SINGLEOUTDOORSENSOR_H
